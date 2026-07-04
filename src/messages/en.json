@@ -1,0 +1,48 @@
+{
+  "brand": "Raghad AI",
+  "tagline": "Your intelligent assistant for Saudi Arabia, the Gulf, and Egypt",
+  "nav": {
+    "home": "Home",
+    "chat": "AI Chat",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "logout": "Logout"
+  },
+  "hero": {
+    "title": "Smart answers tailored to your region",
+    "subtitle": "Ask in Arabic or English — including local dialects. Get accurate, context-aware responses powered by your knowledge base.",
+    "cta": "Start chatting"
+  },
+  "cards": {
+    "title": "Products & Services",
+    "subtitle": "Explore what Raghad AI can help you with"
+  },
+  "chat": {
+    "title": "AI Assistant",
+    "placeholder": "Ask your question in Arabic or English...",
+    "send": "Send",
+    "exportPdf": "Export PDF"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "conversations": "Your conversations",
+    "empty": "No conversations yet. Start chatting to see history here."
+  },
+  "auth": {
+    "loginTitle": "Sign in",
+    "registerTitle": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "submitLogin": "Sign in",
+    "submitRegister": "Register",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  },
+  "region": {
+    "label": "Region",
+    "ksa": "Saudi Arabia",
+    "gcc": "Gulf (GCC)",
+    "egypt": "Egypt"
+  }
+}

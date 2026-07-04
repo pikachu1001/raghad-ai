@@ -1,0 +1,19 @@
+# Raghad AI — Sample Knowledge Base (for testing)
+
+## Consultation Services
+
+Raghad AI provides business consultation services for startups in Saudi Arabia. Services include commercial registration guidance, local compliance support, and operational planning.
+
+## Dialect-Aware Support
+
+Users can ask questions in Saudi dialect such as local Arabic expressions. The system maps dialect terms to formal knowledge base content for accurate retrieval.
+
+## Pricing
+
+- Business consultation: 299 SAR
+- Legal Q&A assistant: 199 SAR
+- Customer support bot: 149 SAR
+
+## Supported Regions
+
+The platform supports Saudi Arabia, GCC countries, and Egypt with localized currency and dialect preferences.
