@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useApp } from "@/components/providers/AppProviders";
+import { useAuth } from "@/components/providers/AuthProvider";
 import type { Locale, Region } from "@/lib/i18n/types";
 
 function NavLink({ href, label }: { href: string; label: string }) {
@@ -25,6 +26,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
 
 export function Header() {
   const { messages, locale, region, setLocale, setRegion } = useApp();
+  const { user, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
@@ -37,10 +39,25 @@ export function Header() {
           <NavLink href="/" label={messages.nav.home} />
           <NavLink href="/chat" label={messages.nav.chat} />
           <NavLink href="/dashboard" label={messages.nav.dashboard} />
-          <NavLink href="/login" label={messages.nav.login} />
+          {user ? (
+            <button
+              type="button"
+              onClick={() => logout()}
+              className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
+            >
+              {messages.nav.logout}
+            </button>
+          ) : (
+            <NavLink href="/login" label={messages.nav.login} />
+          )}
         </nav>
 
         <div className="flex items-center gap-2">
+          {user && (
+            <span className="hidden text-xs text-slate-500 sm:inline">
+              {user.name ?? user.email}
+            </span>
+          )}
           <select
             aria-label={messages.region.label}
             value={region}

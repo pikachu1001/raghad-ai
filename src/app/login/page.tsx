@@ -4,9 +4,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/layout/AppShell";
 import { useApp } from "@/components/providers/AppProviders";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 export default function LoginPage() {
   const { messages } = useApp();
+  const { refresh } = useAuth();
   const router = useRouter();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [email, setEmail] = useState("");
@@ -34,6 +36,7 @@ export default function LoginPage() {
         setError(data.error ?? "Request failed");
         return;
       }
+      await refresh();
       router.push("/dashboard");
     } catch {
       setError("Request failed");

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_Arabic, Inter, Cormorant_Garamond } from "next/font/google";
 import { AppProviders } from "@/components/providers/AppProviders";
+import { AuthProvider } from "@/components/providers/AuthProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -39,7 +40,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoArabic.variable} ${cormorant.variable} min-h-full flex flex-col font-sans antialiased`}
       >
-        <AppProviders>{children}</AppProviders>
+        <AppProviders>
+          <AuthProvider>{children}</AuthProvider>
+        </AppProviders>
       </body>
     </html>
   );

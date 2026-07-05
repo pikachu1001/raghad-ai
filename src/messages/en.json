@@ -29,6 +29,7 @@
   },
   "dashboard": {
     "title": "Dashboard",
+    "welcome": "Welcome back",
     "conversations": "Your conversations",
     "empty": "No conversations yet. Start chatting to see history here."
   },
