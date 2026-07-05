@@ -4,16 +4,20 @@
   "private": true,
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate",
+    "rag:index": "npx tsx scripts/prepare-chunks.ts && powershell -ExecutionPolicy Bypass -File scripts/embed-chunks.ps1 && npx tsx scripts/import-embeddings.ts",
+    "rag:index:node": "npx tsx scripts/index-kb.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
     "bcryptjs": "^3.0.3",
+    "dotenv": "^17.4.2",
     "jose": "^6.2.3",
     "jspdf": "^4.2.1",
     "next": "16.2.10",
@@ -31,6 +35,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
+    "tsx": "^4.23.0",
     "typescript": "^5"
   }
 }

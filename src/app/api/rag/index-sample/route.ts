@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { loadSampleKnowledgeBase } from "@/lib/rag/sample-loader";
-import { setIndexedChunks, isIndexReady } from "@/lib/rag/memory-store";
-import { indexChunks, isOpenAIConfigured } from "@/lib/rag/openai-rag";
+import { indexSampleKnowledgeBase } from "@/lib/rag/index-service";
+import { isOpenAIConfigured } from "@/lib/rag/openai-rag";
+import { getRagStatus } from "@/lib/rag/store";
 
 export async function POST() {
   if (!isOpenAIConfigured()) {
@@ -12,14 +12,11 @@ export async function POST() {
   }
 
   try {
-    const chunks = loadSampleKnowledgeBase();
-    const indexed = await indexChunks(chunks);
-    setIndexedChunks(indexed);
-
+    const result = await indexSampleKnowledgeBase();
     return NextResponse.json({
       indexed: true,
-      chunkCount: indexed.length,
-      message: "Sample knowledge base indexed successfully",
+      chunkCount: result.chunkCount,
+      message: "Knowledge base indexed successfully",
     });
   } catch (error) {
     console.error("[index-sample]", error);
@@ -28,8 +25,9 @@ export async function POST() {
 }
 
 export async function GET() {
+  const status = await getRagStatus();
   return NextResponse.json({
-    ready: isIndexReady(),
+    ...status,
     openaiConfigured: isOpenAIConfigured(),
   });
 }

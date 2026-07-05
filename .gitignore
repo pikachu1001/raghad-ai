@@ -43,3 +43,5 @@ next-env.d.ts
 # sqlite dev database
 /prisma/dev.db
 /prisma/dev.db-journal
+/prisma/chunks-to-embed.json
+/prisma/embeddings-cache.json

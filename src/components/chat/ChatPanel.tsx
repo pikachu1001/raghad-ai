@@ -16,10 +16,13 @@ export function ChatPanel() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState<ChatMessage[]>([]);
+  const [category, setCategory] = useState<string | undefined>();
 
   useEffect(() => {
     const q = searchParams.get("q");
+    const cat = searchParams.get("category");
     if (q) setInput(q);
+    if (cat) setCategory(cat);
   }, [searchParams]);
 
   const sendMessage = async () => {
@@ -33,7 +36,7 @@ export function ChatPanel() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: userMessage, locale }),
+        body: JSON.stringify({ query: userMessage, locale, category }),
       });
       const data = await res.json();
       setHistory((prev) => [

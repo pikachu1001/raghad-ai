@@ -1,39 +1,56 @@
 # Updating the Raghad AI Knowledge Base
 
-## Before client documents arrive (developer prep)
+## Quick start (local)
 
-1. Sample files live in `sample-data/` (`sample-kb-ar.txt`, `sample-kb-en.txt`).
-2. Index them for testing:
+1. Add your OpenAI key to `.env`:
+   ```
+   OPENAI_API_KEY=sk-proj-...
+   ```
+
+2. Index the knowledge base:
+   ```bash
+   npm run rag:index
+   ```
+
+3. Start the app and test chat:
+   ```bash
+   npm run dev
+   ```
+
+4. Or trigger indexing via API (with dev server running):
    ```bash
    curl -X POST http://localhost:3000/api/rag/index-sample
    ```
-3. Requires `OPENAI_API_KEY` in `.env`.
 
-## When client sends documents
+5. Check index status:
+   ```bash
+   curl http://localhost:3000/api/rag/index-sample
+   ```
 
-1. Place PDF/Word/text files in a secure upload folder (or use the admin upload UI once built).
-2. Run the indexing pipeline:
-   - Parse document text
-   - Chunk with overlap (`src/lib/rag/chunker.ts`)
-   - Enrich with dialect synonyms (`src/lib/rag/dialect.ts`)
-   - Generate embeddings via OpenAI
-   - Store in `DocumentChunk` table (Prisma)
+## Sample files
 
-## Adding new documents later
+- `sample-data/sample-kb-ar.txt` — Arabic content (6 sectors)
+- `sample-data/sample-kb-en.txt` — English content
 
-1. Upload the file via dashboard/admin.
-2. Trigger re-index for that document ID.
-3. Old chunks for that document are replaced.
+Replace or extend these with client documents. Re-run `npm run rag:index` after changes.
 
-## Dialect tips
+## Production (Vercel)
 
-- Saudi/Gulf/Egyptian terms are mapped in `src/lib/rag/dialect.ts`.
-- Extend `DIALECT_SYNONYMS` as you discover new local terms from client feedback.
+SQLite does **not** persist on Vercel. For live deployment:
 
-## Environment
+1. Create a free [Neon](https://neon.tech) PostgreSQL database
+2. Set `DATABASE_URL` in Vercel environment variables
+3. Change `prisma/schema.prisma` provider to `postgresql`
+4. Run `npx prisma db push`
+5. Set `OPENAI_API_KEY` in Vercel
+6. Call `POST /api/rag/index-sample` once after deploy
 
-Copy `.env.example` to `.env` and fill in:
+## Adding client documents later
 
-- `OPENAI_API_KEY` — from client
-- `DATABASE_URL` — PostgreSQL connection string
-- `AUTH_SECRET` — random secret for sessions
+1. Add PDF/Word/text files to `sample-data/` (or admin upload in Phase 2)
+2. Update `src/lib/rag/sample-loader.ts` to load new files
+3. Run `npm run rag:index`
+
+## Dialect synonyms
+
+Extend local terms in `src/lib/rag/dialect.ts` as you discover new Gulf Arabic expressions from user feedback.

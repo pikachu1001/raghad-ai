@@ -1,19 +1,38 @@
-# Raghad AI — Sample Knowledge Base (for testing)
+# Raghad AI Knowledge Base | Askraghadai.com
 
-## Consultation Services
+## About the Platform
 
-Raghad AI provides business consultation services for startups in Saudi Arabia. Services include commercial registration guidance, local compliance support, and operational planning.
+Askraghadai.com is the AI-powered companion for the modern Gulf woman across 6 sectors: Fashion & Abayas, Beauty & Scents, Skincare, Home Decor & Kitchen, Kids & Baby Essentials, and Smart Travel Planning.
 
-## Dialect-Aware Support
+## Fashion & Abayas
 
-Users can ask questions in Saudi dialect such as local Arabic expressions. The system maps dialect terms to formal knowledge base content for accurate retrieval.
+We recommend modern modest fashion and abaya styles. Each product recommendation includes a store link and discount code when available.
+Example: Classic abaya from Shein — discount code: RAGHAD15 — link: https://example.com/abaya
 
-## Pricing
+## Beauty & Scents
 
-- Business consultation: 299 SAR
-- Legal Q&A assistant: 199 SAR
-- Customer support bot: 149 SAR
+Luxury perfume and makeup recommendations suited for the Gulf region. Ask about occasion scents, long-lasting fragrances, and halal beauty options.
 
-## Supported Regions
+## Skincare
 
-The platform supports Saudi Arabia, GCC countries, and Egypt with localized currency and dialect preferences.
+Skincare advice for hot Gulf climate: SPF, hydration routines, and product recommendations for sensitive skin.
+
+## Home Decor & Kitchen
+
+Curated home decor and kitchen essentials with affiliate store links and discount codes for partner tracking.
+
+## Kids & Baby Essentials
+
+Trusted product guidance for mothers: diapers, clothing, feeding accessories — tailored for Gulf families.
+
+## Smart Travel Planning
+
+AI-assisted travel tips, packing lists, family-friendly destinations in the Gulf and abroad.
+
+## Dialect Support
+
+Users can ask in Saudi dialect — the system maps local terms to formal knowledge for accurate answers.
+
+## Affiliate Partners
+
+We integrate with Admitad, Impact, and DCMnetwork. Every product recommendation includes store links and discount codes for commission tracking.

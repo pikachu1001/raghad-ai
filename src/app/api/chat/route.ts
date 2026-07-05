@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { expandQueryForRetrieval } from "@/lib/rag/dialect";
-import { getIndexedChunks, isIndexReady } from "@/lib/rag/memory-store";
+import { getActiveIndexedChunks, isRagIndexReady } from "@/lib/rag/store";
 import {
   generateAnswer,
   isOpenAIConfigured,
@@ -12,6 +12,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const query = String(body.query ?? "").trim();
     const locale = body.locale === "ar" ? "ar" : "en";
+    const category = body.category ? String(body.category) : undefined;
 
     if (!query) {
       return NextResponse.json({ error: "Query is required" }, { status: 400 });
@@ -27,25 +28,37 @@ export async function POST(request: Request) {
       });
     }
 
-    if (!isIndexReady()) {
+    if (!(await isRagIndexReady())) {
       return NextResponse.json({
         answer:
           locale === "ar"
-            ? "قاعدة المعرفة غير مفهرسة بعد. استخدم /api/rag/index-sample أو ارفع مستندات العميل."
-            : "Knowledge base is not indexed yet. Call /api/rag/index-sample or upload client documents.",
+            ? "قاعدة المعرفة غير مفهرسة بعد. يرجى تشغيل: npm run rag:index"
+            : "Knowledge base is not indexed yet. Please run: npm run rag:index",
+        stub: true,
+      });
+    }
+
+    const chunks = await getActiveIndexedChunks();
+    if (chunks.length === 0) {
+      return NextResponse.json({
+        answer:
+          locale === "ar"
+            ? "لا توجد بيانات في قاعدة المعرفة."
+            : "No knowledge base data found.",
         stub: true,
       });
     }
 
     const expanded = expandQueryForRetrieval(query);
-    const chunks = await retrieveChunks(getIndexedChunks(), query, expanded);
-    const answer = await generateAnswer(query, chunks, locale);
+    const retrieved = await retrieveChunks(chunks, query, expanded);
+    const answer = await generateAnswer(query, retrieved, locale, category);
 
     return NextResponse.json({
       answer,
-      sources: chunks.map((c) => ({
+      sources: retrieved.map((c) => ({
         id: c.id,
         source: c.metadata.source,
+        category: c.metadata.category,
         preview: c.content.slice(0, 120),
       })),
     });

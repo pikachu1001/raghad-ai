@@ -28,9 +28,10 @@ Work that can be done **before** the client sends materials.
 - [x] Document chunking with overlap
 - [x] Dialect synonym enrichment layer
 - [x] Hybrid search (embedding + keyword scoring)
-- [x] OpenAI integration stubs
-- [x] Sample Arabic/English knowledge base for testing
-- [ ] Live indexing (needs `OPENAI_API_KEY`)
+- [x] OpenAI integration
+- [x] Sample Arabic/English knowledge base (6 sectors)
+- [x] DB-backed index storage (persists across requests)
+- [ ] Run `npm run rag:index` (needs `OPENAI_API_KEY` in `.env`)
 
 ## Step 6: Auth skeleton
 - [x] Register / login API routes
