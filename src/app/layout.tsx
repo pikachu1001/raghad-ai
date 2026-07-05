@@ -47,8 +47,8 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoArabic.variable} ${cormorant.variable} min-h-full flex flex-col font-sans antialiased`}
       >
-        {/* Impact verification text (also on homepage for Edit content method) */}
-        <p style={{ display: "none" }} aria-hidden="true">
+        {/* Server-rendered for Impact crawler (no JavaScript required) */}
+        <p id="impact-site-verification" className="py-2 text-center text-[11px] text-[#8a9a90]">
           {IMPACT_VERIFICATION_TEXT}
         </p>
         <AppProviders>
