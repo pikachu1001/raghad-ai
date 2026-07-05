@@ -24,10 +24,6 @@ export const metadata: Metadata = {
   title: "Raghad AI | Askraghadai.com",
   description:
     "Your AI-powered companion for fashion, beauty, skincare, home, kids, and travel across the Gulf.",
-  other: {
-    "verify-admitad": "0592009f07",
-    "impact-site-verification": "43590970-d033-431f-9a32-7f4c9e545b82",
-  },
 };
 
 export default function RootLayout({
@@ -37,6 +33,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl" className="h-full">
+      <head>
+        {/* Affiliate verification — must use content= (not value=) for crawlers */}
+        <meta name="impact-site-verification" content="062510b6-46e6-4599-bece-de75e60f8634" />
+        <meta name="verify-admitad" content="0592009f07" />
+      </head>
       <body
         className={`${inter.variable} ${notoArabic.variable} ${cormorant.variable} min-h-full flex flex-col font-sans antialiased`}
       >
