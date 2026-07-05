@@ -35,7 +35,7 @@ export default function RootLayout({
     <html lang="ar" dir="rtl" className="h-full">
       <head>
         {/* Affiliate verification — must use content= (not value=) for crawlers */}
-        <meta name="impact-site-verification" content="062510b6-46e6-4599-bece-de75e60f8634" />
+        <meta name="impact-site-verification" content="377d2405-8fda-4b87-bb06-3e392554b33f" />
         <meta name="verify-admitad" content="0592009f07" />
       </head>
       <body
