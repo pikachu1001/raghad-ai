@@ -4,6 +4,9 @@ import { AppProviders } from "@/components/providers/AppProviders";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import "./globals.css";
 
+/** Impact rotates this when verification is restarted — update when client sends a new tag. */
+const IMPACT_VERIFICATION_ID = "1dd31c70-e51e-4301-b3c4-e30fe8e3f1fa";
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -34,13 +37,19 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl" className="h-full">
       <head>
-        {/* Affiliate verification — must use content= (not value=) for crawlers */}
-        <meta name="impact-site-verification" content="1dd31c70-e51e-4301-b3c4-e30fe8e3f1fa" />
+        {/* Impact expects value= in their snippet; include both value and content for crawlers */}
+        <meta name="impact-site-verification" content={IMPACT_VERIFICATION_ID} />
+        {/* @ts-expect-error Impact crawler expects non-standard value= attribute */}
+        <meta name="impact-site-verification" value={IMPACT_VERIFICATION_ID} />
         <meta name="verify-admitad" content="0592009f07" />
       </head>
       <body
         className={`${inter.variable} ${notoArabic.variable} ${cormorant.variable} min-h-full flex flex-col font-sans antialiased`}
       >
+        {/* Impact no-code verification fallback (visible in HTML source) */}
+        <p style={{ display: "none" }} aria-hidden="true">
+          {`Impact-Site-Verification: ${IMPACT_VERIFICATION_ID}`}
+        </p>
         <AppProviders>
           <AuthProvider>{children}</AuthProvider>
         </AppProviders>
