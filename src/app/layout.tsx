@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import { Noto_Sans_Arabic, Inter, Cormorant_Garamond } from "next/font/google";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { AuthProvider } from "@/components/providers/AuthProvider";
+import {
+  IMPACT_VERIFICATION_ID,
+  IMPACT_VERIFICATION_TEXT,
+} from "@/lib/affiliate-verification";
 import "./globals.css";
-
-/** Impact rotates this when verification is restarted — update when client sends a new tag. */
-const IMPACT_VERIFICATION_ID = "adaf1f2c-4f24-44f3-b018-4c2b7b220928";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -46,9 +47,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoArabic.variable} ${cormorant.variable} min-h-full flex flex-col font-sans antialiased`}
       >
-        {/* Impact no-code verification fallback (visible in HTML source) */}
+        {/* Impact verification text (also on homepage for Edit content method) */}
         <p style={{ display: "none" }} aria-hidden="true">
-          {`Impact-Site-Verification: ${IMPACT_VERIFICATION_ID}`}
+          {IMPACT_VERIFICATION_TEXT}
         </p>
         <AppProviders>
           <AuthProvider>{children}</AuthProvider>
