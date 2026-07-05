@@ -5,7 +5,7 @@ import { AuthProvider } from "@/components/providers/AuthProvider";
 import "./globals.css";
 
 /** Impact rotates this when verification is restarted — update when client sends a new tag. */
-const IMPACT_VERIFICATION_ID = "72dbc789-f438-458c-8bfd-7a09cbff0404";
+const IMPACT_VERIFICATION_ID = "adaf1f2c-4f24-44f3-b018-4c2b7b220928";
 
 const inter = Inter({
   variable: "--font-inter",
