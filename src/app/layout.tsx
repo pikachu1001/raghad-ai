@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_Arabic, Inter } from "next/font/google";
+import { Noto_Sans_Arabic, Inter, Cormorant_Garamond } from "next/font/google";
 import { AppProviders } from "@/components/providers/AppProviders";
 import "./globals.css";
 
@@ -13,9 +13,20 @@ const notoArabic = Noto_Sans_Arabic({
   subsets: ["arabic"],
 });
 
+const cormorant = Cormorant_Garamond({
+  variable: "--font-cormorant",
+  subsets: ["latin"],
+  weight: ["400", "600"],
+});
+
 export const metadata: Metadata = {
-  title: "Raghad AI",
-  description: "AI assistant for Saudi Arabia, the Gulf, and Egypt",
+  title: "Raghad AI | Askraghadai.com",
+  description:
+    "Your AI-powered companion for fashion, beauty, skincare, home, kids, and travel across the Gulf.",
+  other: {
+    "verify-admitad": "0592009f07",
+    "impact-site-verification": "43590970-d033-431f-9a32-7f4c9e545b82",
+  },
 };
 
 export default function RootLayout({
@@ -24,9 +35,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" dir="ltr" className="h-full">
+    <html lang="ar" dir="rtl" className="h-full">
       <body
-        className={`${inter.variable} ${notoArabic.variable} min-h-full flex flex-col bg-slate-50 font-sans antialiased`}
+        className={`${inter.variable} ${notoArabic.variable} ${cormorant.variable} min-h-full flex flex-col font-sans antialiased`}
       >
         <AppProviders>{children}</AppProviders>
       </body>

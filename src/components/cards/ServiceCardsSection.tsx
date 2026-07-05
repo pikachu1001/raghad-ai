@@ -3,34 +3,61 @@
 import { ProductCard, type ProductCardItem } from "./ProductCard";
 import { useApp } from "@/components/providers/AppProviders";
 
-/** Placeholder data — replace with client content when materials arrive */
-export const PLACEHOLDER_PRODUCTS: ProductCardItem[] = [
+/** Client's 6 core sectors — modular for future expansion */
+export const CATEGORY_ITEMS: ProductCardItem[] = [
   {
-    id: "1",
-    titleEn: "Business Consultation",
-    titleAr: "استشارات أعمال",
-    descriptionEn: "AI-powered guidance for business setup and compliance in KSA.",
-    descriptionAr: "إرشاد ذكي لإعداد الأعمال والامتثال في السعودية.",
-    price: 299,
-    href: "/chat",
+    id: "fashion",
+    titleEn: "Fashion & Abayas",
+    titleAr: "الأزياء والعبايات",
+    descriptionEn: "Expert recommendations for modest fashion and abaya styles.",
+    descriptionAr: "توصيات متخصصة للأزياء المحتشمة وستايلات العبايات.",
+    price: 0,
+    href: "/chat?category=fashion",
   },
   {
-    id: "2",
-    titleEn: "Legal Q&A Assistant",
-    titleAr: "مساعد الأسئلة القانونية",
-    descriptionEn: "Get answers from your legal knowledge base in Arabic or English.",
-    descriptionAr: "احصل على إجابات من قاعدة المعرفة القانونية بالعربية أو الإنجليزية.",
-    price: 199,
-    href: "/chat",
+    id: "beauty",
+    titleEn: "Beauty & Scents",
+    titleAr: "الجمال والعطور",
+    descriptionEn: "Discover perfumes, makeup, and beauty essentials with affiliate deals.",
+    descriptionAr: "اكتشفي العطور والمكياج وأساسيات الجمال مع عروض الشركاء.",
+    price: 0,
+    href: "/chat?category=beauty",
   },
   {
-    id: "3",
-    titleEn: "Customer Support Bot",
-    titleAr: "بوت دعم العملاء",
-    descriptionEn: "Handle customer inquiries with dialect-aware retrieval.",
-    descriptionAr: "التعامل مع استفسارات العملاء مع بحث يدعم اللهجات المحلية.",
-    price: 149,
-    href: "/chat",
+    id: "skincare",
+    titleEn: "Skincare",
+    titleAr: "العناية بالبشرة",
+    descriptionEn: "Personalized skincare advice tailored to Gulf climate.",
+    descriptionAr: "نصائح عناية بالبشرة مخصصة لمناخ الخليج.",
+    price: 0,
+    href: "/chat?category=skincare",
+  },
+  {
+    id: "home",
+    titleEn: "Home Decor & Kitchen",
+    titleAr: "ديكور المنزل والمطبخ",
+    descriptionEn: "Curated home and kitchen picks with store links and discount codes.",
+    descriptionAr: "اختيارات منزلية ومطبخية مع روابط المتاجر وأكواد الخصم.",
+    price: 0,
+    href: "/chat?category=home",
+  },
+  {
+    id: "kids",
+    titleEn: "Kids & Baby Essentials",
+    titleAr: "مستلزمات الأطفال والرضع",
+    descriptionEn: "Trusted product guidance for mothers across the Gulf.",
+    descriptionAr: "إرشاد موثوق للمنتجات للأمهات في الخليج.",
+    price: 0,
+    href: "/chat?category=kids",
+  },
+  {
+    id: "travel",
+    titleEn: "Smart Travel Planning",
+    titleAr: "تخطيط السفر الذكي",
+    descriptionEn: "AI-assisted travel tips, packing lists, and destination advice.",
+    descriptionAr: "نصائح سفر ذكية وقوائم تعبئة وإرشاد للوجهات.",
+    price: 0,
+    href: "/chat?category=travel",
   },
 ];
 
@@ -38,13 +65,13 @@ export function ServiceCardsSection() {
   const { messages } = useApp();
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-16">
+    <section className="mx-auto max-w-6xl px-4 py-8">
       <div className="mb-8 text-center">
-        <h2 className="text-2xl font-bold text-slate-900">{messages.cards.title}</h2>
-        <p className="mt-2 text-slate-600">{messages.cards.subtitle}</p>
+        <h2 className="font-serif text-2xl tracking-wide text-[#2c3e35]">{messages.cards.title}</h2>
+        <p className="mt-2 text-sm text-[#7a8b82]">{messages.cards.subtitle}</p>
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {PLACEHOLDER_PRODUCTS.map((item) => (
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {CATEGORY_ITEMS.map((item) => (
           <ProductCard key={item.id} item={item} />
         ))}
       </div>

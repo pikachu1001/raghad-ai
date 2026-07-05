@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { jsPDF } from "jspdf";
 import { useApp } from "@/components/providers/AppProviders";
 
@@ -11,9 +12,15 @@ type ChatMessage = {
 
 export function ChatPanel() {
   const { messages, locale } = useApp();
+  const searchParams = useSearchParams();
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState<ChatMessage[]>([]);
+
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q) setInput(q);
+  }, [searchParams]);
 
   const sendMessage = async () => {
     if (!input.trim() || loading) return;

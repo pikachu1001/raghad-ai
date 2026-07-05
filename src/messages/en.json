@@ -10,12 +10,16 @@
   },
   "hero": {
     "title": "Smart answers tailored to your region",
-    "subtitle": "Ask in Arabic or English — including local dialects. Get accurate, context-aware responses powered by your knowledge base.",
-    "cta": "Start chatting"
+    "subtitle": "Your smart guide for an exceptional experience in fashion, beauty, travel, and luxury living.",
+    "searchPlaceholder": "Search for your recommendations...",
+    "cta": "Start chatting",
+    "payment": "Affiliate deals",
+    "voice": "Voice search",
+    "camera": "Visual search"
   },
   "cards": {
-    "title": "Products & Services",
-    "subtitle": "Explore what Raghad AI can help you with"
+    "title": "Our Categories",
+    "subtitle": "6 sectors tailored for the modern Gulf woman"
   },
   "chat": {
     "title": "AI Assistant",
