@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { jsPDF } from "jspdf";
 import { useApp } from "@/components/providers/AppProviders";
+import { ChatProductCard } from "@/components/chat/ChatProductCard";
+import type { ChatProduct } from "@/lib/products/types";
 
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
+  products?: ChatProduct[];
 };
 
 export function ChatPanel() {
@@ -41,12 +44,16 @@ export function ChatPanel() {
       const data = await res.json();
       setHistory((prev) => [
         ...prev,
-        { role: "assistant", content: data.answer ?? data.error ?? "Error" },
+        {
+          role: "assistant",
+          content: data.answer ?? data.error ?? "Error",
+          products: data.products,
+        },
       ]);
     } catch {
       setHistory((prev) => [
         ...prev,
-        { role: "assistant", content: "Request failed. Please try again." },
+        { role: "assistant", content: locale === "ar" ? "فشل الطلب. حاولي مرة أخرى." : "Request failed. Please try again." },
       ]);
     } finally {
       setLoading(false);
@@ -73,57 +80,64 @@ export function ChatPanel() {
   };
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-4 px-4 py-8">
+    <div className="luxury-page mx-auto flex max-w-3xl flex-col gap-4 px-4 py-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-900">{messages.chat.title}</h1>
+        <h1 className="font-serif text-2xl tracking-wide text-[#2c3e35]">{messages.chat.title}</h1>
         {history.length > 0 && (
-          <button
-            type="button"
-            onClick={exportPdf}
-            className="rounded-lg border border-slate-200 px-3 py-1.5 text-sm hover:bg-slate-50"
-          >
+          <button type="button" onClick={exportPdf} className="luxury-card px-3 py-1.5 text-sm text-[#5c6b62] hover:bg-white">
             {messages.chat.exportPdf}
           </button>
         )}
       </div>
 
-      <div className="min-h-[360px] rounded-2xl border border-slate-200 bg-white p-4">
+      <div className="min-h-[360px] luxury-card p-4">
         {history.length === 0 ? (
-          <p className="text-sm text-slate-500">{messages.chat.placeholder}</p>
+          <p className="text-sm text-[#7a8b82]">{messages.chat.placeholder}</p>
         ) : (
           <div className="space-y-4">
             {history.map((msg, i) => (
-              <div
-                key={i}
-                className={`rounded-xl px-4 py-3 text-sm ${
-                  msg.role === "user"
-                    ? "ml-8 bg-emerald-50 text-emerald-900"
-                    : "mr-8 bg-slate-50 text-slate-800"
-                }`}
-              >
-                {msg.content}
+              <div key={i}>
+                <div
+                  className={`rounded-xl px-4 py-3 text-sm ${
+                    msg.role === "user"
+                      ? "ml-8 bg-[#2c6e55]/10 text-[#1f5240]"
+                      : "mr-8 bg-white text-[#2c3e35]"
+                  }`}
+                >
+                  {msg.content}
+                </div>
+                {msg.products && msg.products.length > 0 && (
+                  <div className="mr-8 mt-3 grid gap-3 sm:grid-cols-2">
+                    {msg.products.map((p) => (
+                      <ChatProductCard key={p.id} product={p} />
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
         )}
       </div>
 
-      <div className="flex gap-2">
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-          placeholder={messages.chat.placeholder}
-          className="flex-1 rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-emerald-500"
-        />
-        <button
-          type="button"
-          onClick={sendMessage}
-          disabled={loading}
-          className="rounded-xl bg-emerald-600 px-5 py-3 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
-        >
-          {loading ? "..." : messages.chat.send}
-        </button>
+      <div className="luxury-search-bar">
+        <div className="luxury-search-inner">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            placeholder={messages.chat.placeholder}
+            dir={locale === "ar" ? "rtl" : "ltr"}
+            className="flex-1 bg-transparent text-sm text-[#3d4f45] outline-none placeholder:text-[#9a8b78]"
+          />
+          <button
+            type="button"
+            onClick={sendMessage}
+            disabled={loading}
+            className="shrink-0 rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-5 py-2 text-sm font-medium text-white disabled:opacity-50"
+          >
+            {loading ? "..." : messages.chat.send}
+          </button>
+        </div>
       </div>
     </div>
   );

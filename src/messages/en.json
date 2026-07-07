@@ -6,7 +6,8 @@
     "chat": "AI Chat",
     "dashboard": "Dashboard",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "admin": "Admin"
   },
   "hero": {
     "title": "Smart answers tailored to your region",
@@ -31,7 +32,34 @@
     "title": "Dashboard",
     "welcome": "Welcome back",
     "conversations": "Your conversations",
-    "empty": "No conversations yet. Start chatting to see history here."
+    "empty": "No conversations yet. Start chatting to see history here.",
+    "loading": "Loading..."
+  },
+  "admin": {
+    "title": "Admin Panel",
+    "subtitle": "Manage products and knowledge base",
+    "products": "Products",
+    "productsDesc": "Add and edit affiliate products shown in chat",
+    "knowledge": "Knowledge Base",
+    "knowledgeDesc": "Upload documents and re-index content",
+    "loading": "Checking access...",
+    "unauthorized": "You are not authorized to access this page.",
+    "nameEn": "Name (English)",
+    "nameAr": "Name (Arabic)",
+    "price": "Price",
+    "affiliateUrl": "Affiliate URL",
+    "discountCode": "Discount code",
+    "imageUrl": "Image URL",
+    "addProduct": "Add product",
+    "delete": "Delete",
+    "saveFailed": "Save failed",
+    "docTitle": "Document title",
+    "docContent": "Text content",
+    "uploadDoc": "Upload document",
+    "reindex": "Re-index knowledge base",
+    "uploaded": "Uploaded successfully",
+    "indexing": "Indexing...",
+    "indexDone": "Indexing complete"
   },
   "auth": {
     "loginTitle": "Sign in",

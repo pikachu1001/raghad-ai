@@ -28,7 +28,7 @@ const LOCALE_KEY = "raghad-locale";
 const REGION_KEY = "raghad-region";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
+  const [locale, setLocaleState] = useState<Locale>("ar");
   const [region, setRegionState] = useState<Region>("ksa");
   const [messages, setMessages] = useState<Messages | null>(null);
 
@@ -70,8 +70,8 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 
   if (!value) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-50">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-emerald-600 border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-[#f3ece0]">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#c9a962] border-t-transparent" />
       </div>
     );
   }

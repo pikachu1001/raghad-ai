@@ -6,6 +6,8 @@ import {
   isOpenAIConfigured,
   retrieveChunks,
 } from "@/lib/rag/openai-rag";
+import { getProductsForChat } from "@/lib/products/store";
+import { toChatProduct } from "@/lib/products/types";
 
 export async function POST(request: Request) {
   try {
@@ -53,8 +55,12 @@ export async function POST(request: Request) {
     const retrieved = await retrieveChunks(chunks, query, expanded);
     const answer = await generateAnswer(query, retrieved, locale, category);
 
+    const dbProducts = await getProductsForChat(category);
+    const products = dbProducts.map((p) => toChatProduct(p, locale));
+
     return NextResponse.json({
       answer,
+      products,
       sources: retrieved.map((c) => ({
         id: c.id,
         source: c.metadata.source,

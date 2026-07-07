@@ -1,6 +1,5 @@
-"use client";
-
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useApp } from "@/components/providers/AppProviders";
 import { useAuth } from "@/components/providers/AuthProvider";
@@ -15,8 +14,8 @@ function NavLink({ href, label }: { href: string; label: string }) {
       href={href}
       className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
         active
-          ? "bg-emerald-100 text-emerald-800"
-          : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+          ? "bg-[#c9a962]/20 text-[#1f5240]"
+          : "text-[#5c6b62] hover:bg-[#f3ece0] hover:text-[#2c3e35]"
       }`}
     >
       {label}
@@ -29,21 +28,33 @@ export function Header() {
   const { user, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-[#ddd0b8]/50 bg-[#faf6ef]/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-        <Link href="/" className="text-lg font-bold text-emerald-700">
-          {messages.brand}
+        <Link href="/" className="flex items-center gap-2">
+          <div className="relative h-9 w-9 shrink-0">
+            <Image
+              src="/brand/logo.png"
+              alt={messages.brand}
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+          <span className="hidden font-serif text-lg tracking-wide text-[#2c3e35] sm:inline">
+            {messages.brand}
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-1 sm:flex">
           <NavLink href="/" label={messages.nav.home} />
           <NavLink href="/chat" label={messages.nav.chat} />
           <NavLink href="/dashboard" label={messages.nav.dashboard} />
+          {user?.isAdmin && <NavLink href="/admin" label={messages.nav.admin} />}
           {user ? (
             <button
               type="button"
               onClick={() => logout()}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-[#5c6b62] hover:bg-[#f3ece0]"
             >
               {messages.nav.logout}
             </button>
@@ -54,7 +65,7 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           {user && (
-            <span className="hidden text-xs text-slate-500 sm:inline">
+            <span className="hidden text-xs text-[#7a8b82] sm:inline">
               {user.name ?? user.email}
             </span>
           )}
@@ -62,7 +73,7 @@ export function Header() {
             aria-label={messages.region.label}
             value={region}
             onChange={(e) => setRegion(e.target.value as Region)}
-            className="rounded-lg border border-slate-200 px-2 py-1.5 text-sm"
+            className="luxury-input !w-auto py-1.5 text-sm"
           >
             <option value="ksa">{messages.region.ksa}</option>
             <option value="gcc">{messages.region.gcc}</option>
@@ -73,10 +84,10 @@ export function Header() {
             aria-label="Language"
             value={locale}
             onChange={(e) => setLocale(e.target.value as Locale)}
-            className="rounded-lg border border-slate-200 px-2 py-1.5 text-sm"
+            className="luxury-input !w-auto py-1.5 text-sm"
           >
-            <option value="en">EN</option>
             <option value="ar">AR</option>
+            <option value="en">EN</option>
           </select>
         </div>
       </div>

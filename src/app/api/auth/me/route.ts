@@ -11,14 +11,19 @@ export async function GET() {
 
     const user = await prisma.user.findUnique({
       where: { id: session.userId },
-      select: { id: true, email: true, name: true, region: true },
+      select: { id: true, email: true, name: true, region: true, role: true },
     });
 
     if (!user) {
       return NextResponse.json({ user: null });
     }
 
-    return NextResponse.json({ user });
+    const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+    const isAdmin =
+      user.role === "admin" ||
+      Boolean(adminEmail && user.email.toLowerCase() === adminEmail);
+
+    return NextResponse.json({ user: { ...user, isAdmin } });
   } catch {
     return NextResponse.json({ user: null });
   }

@@ -47,10 +47,8 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${notoArabic.variable} ${cormorant.variable} min-h-full flex flex-col font-sans antialiased`}
       >
-        {/* Server-rendered for Impact crawler (no JavaScript required) */}
-        <p id="impact-site-verification" className="py-2 text-center text-[11px] text-[#8a9a90]">
-          {IMPACT_VERIFICATION_TEXT}
-        </p>
+        {/* Server-rendered for Impact crawler (screen-reader only) */}
+        <p className="sr-only-crawler">{IMPACT_VERIFICATION_TEXT}</p>
         <AppProviders>
           <AuthProvider>{children}</AuthProvider>
         </AppProviders>

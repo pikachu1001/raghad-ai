@@ -7,6 +7,8 @@ export type AuthUser = {
   email: string;
   name: string | null;
   region: string;
+  role: string;
+  isAdmin: boolean;
 };
 
 type AuthContextValue = {

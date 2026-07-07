@@ -107,6 +107,7 @@ export function LuxuryHome() {
             alt="Raghad AI"
             fill
             className="object-contain"
+            style={{ background: "transparent" }}
             priority
           />
         </div>
@@ -114,7 +115,10 @@ export function LuxuryHome() {
         <h1 className="text-center font-serif text-2xl tracking-[0.2em] text-[#2c3e35] sm:text-3xl">
           {locale === "ar" ? "رغد AI" : "RAGHAD AI"}
         </h1>
-        <p className="mt-1 text-sm tracking-widest text-[#7a8b82]">Askraghadai.com</p>
+        <p className="mt-1 font-serif text-sm tracking-widest text-[#7a8b82]">Askraghadai.com</p>
+        <p className="mt-2 text-center text-xs text-[#9a8560]">
+          {locale === "ar" ? "دليلك الذكي الموثوق" : "Your trusted smart guide"}
+        </p>
 
         <p className="mt-8 max-w-xs text-center text-sm leading-7 text-[#4a5c52]">
           {messages.hero.subtitle}
