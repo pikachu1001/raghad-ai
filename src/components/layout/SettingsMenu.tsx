@@ -27,7 +27,7 @@ export function SettingsMenu({ className = "" }: { className?: string }) {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={messages.settings.title}
-        className="flex items-center gap-1.5 rounded-full border border-[#d4c4a0]/60 bg-white/70 px-3 py-1.5 text-xs font-medium text-[#5c6b62] transition hover:bg-white hover:shadow-sm"
+        className="flex items-center gap-1.5 rounded-full border border-[#c9a962]/40 bg-gradient-to-b from-white to-[#faf6ef] px-3.5 py-2 text-xs font-medium text-[#5c6b62] shadow-sm transition hover:border-[#c9a962]/60 hover:shadow-md"
       >
         <svg className="h-4 w-4 text-[#9a8560]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path
@@ -42,8 +42,11 @@ export function SettingsMenu({ className = "" }: { className?: string }) {
       </button>
 
       {open && (
-        <div className="absolute end-0 top-full z-50 mt-2 w-64 rounded-xl border border-[#ddd0b8]/70 bg-[#faf6ef] p-4 shadow-xl">
-          <p className="mb-3 font-serif text-sm tracking-wide text-[#2c3e35]">{messages.settings.title}</p>
+        <div className="absolute start-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-xl border border-[#c9a962]/30 bg-gradient-to-b from-[#faf6ef] to-[#f5eedf] p-5 shadow-[0_12px_40px_rgba(180,150,90,0.25)]">
+          <div className="mb-4 border-b border-[#ddd0b8]/50 pb-3">
+            <p className="font-serif text-base tracking-wide text-[#2c3e35]">{messages.settings.title}</p>
+            <p className="mt-1 text-xs text-[#9a8560]">{messages.settings.subtitle}</p>
+          </div>
 
           <label className="mb-1 block text-xs text-[#7a8b82]">{messages.settings.region}</label>
           <select

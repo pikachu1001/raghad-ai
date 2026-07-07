@@ -27,11 +27,14 @@ function NavLink({ href, label }: { href: string; label: string }) {
 }
 
 export function Header() {
-  const { messages } = useApp();
+  const { messages, dir } = useApp();
   const { user, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#ddd0b8]/50 bg-[#faf6ef]/95 backdrop-blur">
+    <header
+      dir={dir}
+      className="sticky top-0 z-50 border-b border-[#ddd0b8]/50 bg-[#faf6ef]/95 backdrop-blur"
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
           <div className="relative h-9 w-9 shrink-0">

@@ -4,11 +4,11 @@ import { AppShell } from "@/components/layout/AppShell";
 import { useApp } from "@/components/providers/AppProviders";
 
 export default function AboutPage() {
-  const { messages } = useApp();
+  const { messages, dir } = useApp();
 
   return (
     <AppShell>
-      <div className="luxury-page">
+      <div className="luxury-page" dir={dir}>
         <section className="border-b border-[#ddd0b8]/40 bg-gradient-to-b from-[#faf6ef] to-[#f3ece0] px-4 py-14 text-center">
           <h1 className="font-serif text-3xl tracking-wide text-[#2c3e35] sm:text-4xl">
             {messages.about.title}

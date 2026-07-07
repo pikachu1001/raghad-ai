@@ -4,10 +4,10 @@ import Link from "next/link";
 import { useApp } from "@/components/providers/AppProviders";
 
 export function Footer() {
-  const { messages, regionConfig } = useApp();
+  const { messages, regionConfig, dir } = useApp();
 
   return (
-    <footer className="mt-auto border-t border-[#ddd0b8]/50 bg-[#faf6ef]">
+    <footer dir={dir} className="mt-auto border-t border-[#ddd0b8]/50 bg-[#faf6ef]">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-6 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-wrap gap-4 text-sm">
           <Link href="/about" className="text-[#5c6b62] hover:text-[#2c6e55]">

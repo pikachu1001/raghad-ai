@@ -19,12 +19,15 @@ type ChatMessage = {
 };
 
 export function ChatPanel() {
-  const { messages, locale } = useApp();
+  const { messages, locale, dir } = useApp();
   const searchParams = useSearchParams();
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState<ChatMessage[]>([]);
   const [category, setCategory] = useState<string | undefined>();
+
+  const inputPlaceholder =
+    locale === "ar" ? messages.hero.searchPlaceholder : messages.chat.placeholder;
 
   useEffect(() => {
     const q = searchParams.get("q");
@@ -93,11 +96,15 @@ export function ChatPanel() {
   };
 
   return (
-    <div className="luxury-page mx-auto flex max-w-3xl flex-col gap-4 px-4 py-8">
-      <div className="flex items-center justify-between">
+    <div className="luxury-page mx-auto flex max-w-3xl flex-col gap-4 px-4 py-8" dir={dir}>
+      <div className="flex items-center justify-between gap-3">
         <h1 className="font-serif text-2xl tracking-wide text-[#2c3e35]">{messages.chat.title}</h1>
         {history.length > 0 && (
-          <button type="button" onClick={exportPdf} className="luxury-card px-3 py-1.5 text-sm text-[#5c6b62] hover:bg-white">
+          <button
+            type="button"
+            onClick={exportPdf}
+            className="luxury-card shrink-0 px-3 py-1.5 text-sm text-[#5c6b62] hover:bg-white"
+          >
             {messages.chat.exportPdf}
           </button>
         )}
@@ -105,7 +112,7 @@ export function ChatPanel() {
 
       <div className="min-h-[360px] luxury-card p-4">
         {history.length === 0 ? (
-          <p className="text-sm text-[#7a8b82]">{messages.chat.placeholder}</p>
+          <p className="text-center text-sm leading-7 text-[#7a8b82]">{messages.chat.welcome}</p>
         ) : (
           <div className="space-y-4">
             {history.map((msg, i) => (
@@ -113,12 +120,12 @@ export function ChatPanel() {
                 <div
                   className={`rounded-xl px-4 py-3 text-sm ${
                     msg.role === "user"
-                      ? "ml-8 bg-[#2c6e55]/10 text-[#1f5240]"
-                      : "mr-8 bg-white text-[#2c3e35]"
+                      ? "ms-8 bg-[#2c6e55]/10 text-[#1f5240]"
+                      : "me-8 bg-white text-[#2c3e35]"
                   }`}
                 >
                   {msg.role === "user" ? (
-                    msg.content
+                    <span className="whitespace-pre-wrap">{msg.content}</span>
                   ) : (
                     <ChatMessageContent
                       content={msg.content}
@@ -128,7 +135,7 @@ export function ChatPanel() {
                   )}
                 </div>
                 {msg.suggestCategories && (
-                  <div className="mr-8">
+                  <div className="me-8">
                     <CategorySuggestions
                       locale={locale}
                       title={messages.chat.browseCategories}
@@ -136,7 +143,7 @@ export function ChatPanel() {
                   </div>
                 )}
                 {msg.products && msg.products.length > 0 && (
-                  <div className="mr-8 mt-3 grid gap-3 sm:grid-cols-2">
+                  <div className="me-8 mt-3 grid gap-3 sm:grid-cols-2">
                     {msg.products.map((p) => (
                       <ChatProductCard key={p.id} product={p} />
                     ))}
@@ -148,26 +155,31 @@ export function ChatPanel() {
         )}
       </div>
 
-      <div className="luxury-search-bar">
+      <form
+        className="luxury-search-bar"
+        onSubmit={(e) => {
+          e.preventDefault();
+          sendMessage();
+        }}
+      >
         <div className="luxury-search-inner">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-            placeholder={messages.chat.placeholder}
-            dir={locale === "ar" ? "rtl" : "ltr"}
-            className="flex-1 bg-transparent text-sm text-[#3d4f45] outline-none placeholder:text-[#9a8b78]"
+            placeholder={inputPlaceholder}
+            dir={dir}
+            aria-label={messages.chat.title}
+            className="min-w-0 flex-1 bg-transparent text-sm text-[#3d4f45] outline-none placeholder:text-[#9a8b78]"
           />
           <button
-            type="button"
-            onClick={sendMessage}
+            type="submit"
             disabled={loading}
             className="shrink-0 rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-5 py-2 text-sm font-medium text-white disabled:opacity-50"
           >
             {loading ? "..." : messages.chat.send}
           </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

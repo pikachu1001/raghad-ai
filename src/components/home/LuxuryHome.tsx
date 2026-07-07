@@ -38,7 +38,7 @@ function ActionButton({
 }
 
 export function LuxuryHome() {
-  const { messages, locale } = useApp();
+  const { messages, locale, dir } = useApp();
   const router = useRouter();
   const [query, setQuery] = useState("");
 
@@ -49,7 +49,7 @@ export function LuxuryHome() {
   };
 
   return (
-    <div className="relative min-h-[85vh] overflow-hidden bg-[#f3ece0] text-[#2c3e35]">
+    <div className="relative min-h-[85vh] overflow-hidden bg-[#f3ece0] text-[#2c3e35]" dir={dir}>
       {/* Compass watermark */}
       <div
         aria-hidden

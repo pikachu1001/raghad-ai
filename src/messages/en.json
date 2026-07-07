@@ -15,6 +15,7 @@
   },
   "settings": {
     "title": "Settings",
+    "subtitle": "Region, currency & language",
     "region": "Country / Region",
     "currency": "Currency",
     "language": "Language"
@@ -35,6 +36,7 @@
   "chat": {
     "title": "AI Assistant",
     "placeholder": "Ask your question in Arabic or English...",
+    "welcome": "Welcome! Ask me about fashion, beauty, travel, and more. Type your question below.",
     "send": "Send",
     "exportPdf": "Export PDF",
     "visitLink": "Visit link",
@@ -106,6 +108,8 @@
     "email": "Email",
     "message": "Your message",
     "send": "Send Message",
-    "contentNote": "The form will be activated once final content is received."
+    "sending": "Sending...",
+    "success": "Thank you! We received your message and will reply soon.",
+    "error": "Could not send your message. Please try again."
   }
 }

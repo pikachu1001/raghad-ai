@@ -56,7 +56,7 @@ export function MobileNav({ className = "" }: { className?: string }) {
             onClick={() => setOpen(false)}
             aria-hidden
           />
-          <aside className="fixed inset-y-0 end-0 z-50 flex w-[min(100%,20rem)] flex-col border-s border-[#ddd0b8]/60 bg-[#faf6ef] shadow-2xl">
+          <aside className="fixed inset-y-0 start-0 z-50 flex w-[min(100%,20rem)] flex-col border-e border-[#ddd0b8]/60 bg-[#faf6ef] shadow-2xl">
             <div className="flex items-center justify-between border-b border-[#ddd0b8]/50 px-5 py-4">
               <span className="font-serif text-lg text-[#2c3e35]">{messages.brand}</span>
               <button

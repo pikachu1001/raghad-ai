@@ -36,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" className="h-full">
+    <html lang="ar" dir="rtl" className="h-full" suppressHydrationWarning>
       <head>
         {/* Impact expects value= in their snippet; include both value and content for crawlers */}
         <meta name="impact-site-verification" content={IMPACT_VERIFICATION_ID} />

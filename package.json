@@ -10,6 +10,7 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "npx tsx scripts/seed-products.ts",
+    "db:seed-affiliates": "npx tsx scripts/seed-affiliate-products.ts",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate",
     "rag:index": "npx tsx scripts/prepare-chunks.ts && powershell -ExecutionPolicy Bypass -File scripts/embed-chunks.ps1 && npx tsx scripts/import-embeddings.ts",
