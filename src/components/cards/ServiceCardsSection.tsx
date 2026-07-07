@@ -65,8 +65,8 @@ export function ServiceCardsSection() {
   const { messages } = useApp();
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-8 text-center">
+    <section className="mx-auto max-w-6xl px-4 pb-8 pt-2">
+      <div className="mb-6 text-center">
         <h2 className="font-serif text-2xl tracking-wide text-[#2c3e35]">{messages.cards.title}</h2>
         <p className="mt-2 text-sm text-[#7a8b82]">{messages.cards.subtitle}</p>
       </div>

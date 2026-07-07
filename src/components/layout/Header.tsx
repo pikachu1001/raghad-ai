@@ -1,9 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useApp } from "@/components/providers/AppProviders";
 import { useAuth } from "@/components/providers/AuthProvider";
-import type { Locale, Region } from "@/lib/i18n/types";
+import { SettingsMenu } from "@/components/layout/SettingsMenu";
+import { MobileNav } from "@/components/layout/MobileNav";
 
 function NavLink({ href, label }: { href: string; label: string }) {
   const pathname = usePathname();
@@ -24,7 +27,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
 }
 
 export function Header() {
-  const { messages, locale, region, setLocale, setRegion } = useApp();
+  const { messages } = useApp();
   const { user, logout } = useAuth();
 
   return (
@@ -36,6 +39,7 @@ export function Header() {
               src="/brand/logo.png"
               alt={messages.brand}
               fill
+              sizes="36px"
               className="object-contain"
               priority
             />
@@ -45,9 +49,11 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 sm:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           <NavLink href="/" label={messages.nav.home} />
           <NavLink href="/chat" label={messages.nav.chat} />
+          <NavLink href="/about" label={messages.nav.about} />
+          <NavLink href="/contact" label={messages.nav.contact} />
           <NavLink href="/dashboard" label={messages.nav.dashboard} />
           {user?.isAdmin && <NavLink href="/admin" label={messages.nav.admin} />}
           {user ? (
@@ -65,30 +71,12 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           {user && (
-            <span className="hidden text-xs text-[#7a8b82] sm:inline">
+            <span className="hidden text-xs text-[#7a8b82] md:inline">
               {user.name ?? user.email}
             </span>
           )}
-          <select
-            aria-label={messages.region.label}
-            value={region}
-            onChange={(e) => setRegion(e.target.value as Region)}
-            className="luxury-input !w-auto py-1.5 text-sm"
-          >
-            <option value="ksa">{messages.region.ksa}</option>
-            <option value="gcc">{messages.region.gcc}</option>
-            <option value="egypt">{messages.region.egypt}</option>
-          </select>
-
-          <select
-            aria-label="Language"
-            value={locale}
-            onChange={(e) => setLocale(e.target.value as Locale)}
-            className="luxury-input !w-auto py-1.5 text-sm"
-          >
-            <option value="ar">AR</option>
-            <option value="en">EN</option>
-          </select>
+          <SettingsMenu className="hidden sm:block" />
+          <MobileNav className="lg:hidden" />
         </div>
       </div>
     </header>

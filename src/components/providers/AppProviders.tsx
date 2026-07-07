@@ -11,6 +11,7 @@ import {
 import { getMessages } from "@/lib/i18n/get-messages";
 import type { Locale, Messages, Region } from "@/lib/i18n/types";
 import { REGION_CONFIG } from "@/lib/region/config";
+import { REGION_KEY, REGION_MANUAL_KEY } from "@/lib/region/geo";
 
 type AppContextValue = {
   locale: Locale;
@@ -25,7 +26,6 @@ type AppContextValue = {
 const AppContext = createContext<AppContextValue | null>(null);
 
 const LOCALE_KEY = "raghad-locale";
-const REGION_KEY = "raghad-region";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>("ar");
@@ -37,6 +37,21 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
     const savedRegion = localStorage.getItem(REGION_KEY) as Region | null;
     if (savedLocale === "en" || savedLocale === "ar") setLocaleState(savedLocale);
     if (savedRegion && savedRegion in REGION_CONFIG) setRegionState(savedRegion);
+  }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem(REGION_MANUAL_KEY)) return;
+    if (localStorage.getItem(REGION_KEY)) return;
+
+    fetch("/api/geo")
+      .then((r) => r.json())
+      .then((data: { region?: Region }) => {
+        if (data.region && data.region in REGION_CONFIG) {
+          setRegionState(data.region);
+          localStorage.setItem(REGION_KEY, data.region);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -53,6 +68,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
   const setRegion = useCallback((next: Region) => {
     setRegionState(next);
     localStorage.setItem(REGION_KEY, next);
+    localStorage.setItem(REGION_MANUAL_KEY, "1");
   }, []);
 
   const value = useMemo<AppContextValue | null>(() => {

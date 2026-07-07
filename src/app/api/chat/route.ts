@@ -8,6 +8,10 @@ import {
 } from "@/lib/rag/openai-rag";
 import { getProductsForChat } from "@/lib/products/store";
 import { toChatProduct } from "@/lib/products/types";
+import {
+  getCategoryFallbackMessage,
+  shouldSuggestCategories,
+} from "@/lib/chat/fallback";
 
 export async function POST(request: Request) {
   try {
@@ -21,32 +25,29 @@ export async function POST(request: Request) {
     }
 
     if (!isOpenAIConfigured()) {
+      const answer = getCategoryFallbackMessage(locale);
       return NextResponse.json({
-        answer:
-          locale === "ar"
-            ? "مساعد AI غير متصل بعد. يرجى إضافة OPENAI_API_KEY لبدء المحادثة."
-            : "AI assistant is not connected yet. Please add OPENAI_API_KEY to start chatting.",
+        answer,
+        suggestCategories: true,
         stub: true,
       });
     }
 
     if (!(await isRagIndexReady())) {
+      const answer = getCategoryFallbackMessage(locale);
       return NextResponse.json({
-        answer:
-          locale === "ar"
-            ? "قاعدة المعرفة غير مفهرسة بعد. يرجى تشغيل: npm run rag:index"
-            : "Knowledge base is not indexed yet. Please run: npm run rag:index",
+        answer,
+        suggestCategories: true,
         stub: true,
       });
     }
 
     const chunks = await getActiveIndexedChunks();
     if (chunks.length === 0) {
+      const answer = getCategoryFallbackMessage(locale);
       return NextResponse.json({
-        answer:
-          locale === "ar"
-            ? "لا توجد بيانات في قاعدة المعرفة."
-            : "No knowledge base data found.",
+        answer,
+        suggestCategories: true,
         stub: true,
       });
     }
@@ -54,6 +55,7 @@ export async function POST(request: Request) {
     const expanded = expandQueryForRetrieval(query);
     const retrieved = await retrieveChunks(chunks, query, expanded);
     const answer = await generateAnswer(query, retrieved, locale, category);
+    const suggestCategories = shouldSuggestCategories(answer);
 
     const dbProducts = await getProductsForChat(category);
     const products = dbProducts.map((p) => toChatProduct(p, locale));
@@ -61,6 +63,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       answer,
       products,
+      suggestCategories,
       sources: retrieved.map((c) => ({
         id: c.id,
         source: c.metadata.source,

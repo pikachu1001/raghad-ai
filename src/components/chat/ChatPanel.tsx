@@ -5,12 +5,17 @@ import { useSearchParams } from "next/navigation";
 import { jsPDF } from "jspdf";
 import { useApp } from "@/components/providers/AppProviders";
 import { ChatProductCard } from "@/components/chat/ChatProductCard";
+import {
+  CategorySuggestions,
+  ChatMessageContent,
+} from "@/components/chat/ChatMessageContent";
 import type { ChatProduct } from "@/lib/products/types";
 
 type ChatMessage = {
   role: "user" | "assistant";
   content: string;
   products?: ChatProduct[];
+  suggestCategories?: boolean;
 };
 
 export function ChatPanel() {
@@ -48,12 +53,20 @@ export function ChatPanel() {
           role: "assistant",
           content: data.answer ?? data.error ?? "Error",
           products: data.products,
+          suggestCategories: data.suggestCategories,
         },
       ]);
     } catch {
       setHistory((prev) => [
         ...prev,
-        { role: "assistant", content: locale === "ar" ? "فشل الطلب. حاولي مرة أخرى." : "Request failed. Please try again." },
+        {
+          role: "assistant",
+          content:
+            locale === "ar"
+              ? "عذراً، حدث خطأ. يرجى المحاولة مرة أخرى أو اختيار أحد أقسامنا من الصفحة الرئيسية."
+              : "Sorry, something went wrong. Please try again or browse our categories from the homepage.",
+          suggestCategories: true,
+        },
       ]);
     } finally {
       setLoading(false);
@@ -104,8 +117,24 @@ export function ChatPanel() {
                       : "mr-8 bg-white text-[#2c3e35]"
                   }`}
                 >
-                  {msg.content}
+                  {msg.role === "user" ? (
+                    msg.content
+                  ) : (
+                    <ChatMessageContent
+                      content={msg.content}
+                      locale={locale}
+                      linkLabel={messages.chat.visitLink}
+                    />
+                  )}
                 </div>
+                {msg.suggestCategories && (
+                  <div className="mr-8">
+                    <CategorySuggestions
+                      locale={locale}
+                      title={messages.chat.browseCategories}
+                    />
+                  </div>
+                )}
                 {msg.products && msg.products.length > 0 && (
                   <div className="mr-8 mt-3 grid gap-3 sm:grid-cols-2">
                     {msg.products.map((p) => (

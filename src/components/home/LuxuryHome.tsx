@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useApp } from "@/components/providers/AppProviders";
+import { SettingsMenu } from "@/components/layout/SettingsMenu";
+import { MobileNav } from "@/components/layout/MobileNav";
 
 function ActionButton({
   label,
@@ -36,7 +38,7 @@ function ActionButton({
 }
 
 export function LuxuryHome() {
-  const { messages, locale, setLocale } = useApp();
+  const { messages, locale } = useApp();
   const router = useRouter();
   const [query, setQuery] = useState("");
 
@@ -47,7 +49,7 @@ export function LuxuryHome() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#f3ece0] text-[#2c3e35]">
+    <div className="relative min-h-[85vh] overflow-hidden bg-[#f3ece0] text-[#2c3e35]">
       {/* Compass watermark */}
       <div
         aria-hidden
@@ -68,7 +70,6 @@ export function LuxuryHome() {
         }}
       />
 
-      {/* Corner AI marks */}
       <span aria-hidden className="pointer-events-none absolute left-4 top-4 font-serif text-sm text-[#c9a962]/50">
         Ai
       </span>
@@ -76,36 +77,18 @@ export function LuxuryHome() {
         Ai
       </span>
 
-      {/* Top bar */}
       <header className="relative z-10 flex items-center justify-between px-5 pt-5">
-        <select
-          aria-label="Language"
-          value={locale}
-          onChange={(e) => setLocale(e.target.value as "en" | "ar")}
-          className="rounded-full border border-[#d4c4a0]/60 bg-white/50 px-3 py-1 text-xs text-[#5c6b62]"
-        >
-          <option value="ar">AR</option>
-          <option value="en">EN</option>
-        </select>
-
-        <button
-          type="button"
-          aria-label="Menu"
-          className="flex flex-col gap-1.5 rounded-lg p-2"
-        >
-          <span className="h-0.5 w-6 bg-[#c9a962]" />
-          <span className="h-0.5 w-6 bg-[#c9a962]" />
-          <span className="h-0.5 w-6 bg-[#c9a962]" />
-        </button>
+        <SettingsMenu />
+        <MobileNav />
       </header>
 
-      {/* Hero */}
-      <main className="relative z-10 mx-auto flex max-w-lg flex-col items-center px-6 pb-16 pt-6">
-        <div className="relative mb-4 h-44 w-44 sm:h-52 sm:w-52">
+      <main className="relative z-10 mx-auto flex max-w-lg flex-col items-center px-6 pb-6 pt-2">
+        <div className="relative mb-2 h-40 w-40 sm:h-48 sm:w-48">
           <Image
             src="/brand/logo.png"
             alt="Raghad AI"
             fill
+            sizes="(max-width: 640px) 160px, 192px"
             className="object-contain"
             style={{ background: "transparent" }}
             priority
@@ -116,18 +99,17 @@ export function LuxuryHome() {
           {locale === "ar" ? "رغد AI" : "RAGHAD AI"}
         </h1>
         <p className="mt-1 font-serif text-sm tracking-widest text-[#7a8b82]">Askraghadai.com</p>
-        <p className="mt-2 text-center text-xs text-[#9a8560]">
+        <p className="mt-1 text-center text-xs text-[#9a8560]">
           {locale === "ar" ? "دليلك الذكي الموثوق" : "Your trusted smart guide"}
         </p>
 
-        <p className="mt-8 max-w-xs text-center text-sm leading-7 text-[#4a5c52]">
+        <p className="mt-5 max-w-xs text-center text-sm leading-7 text-[#4a5c52]">
           {messages.hero.subtitle}
         </p>
 
-        {/* Search bar */}
-        <form onSubmit={submitSearch} className="relative mt-10 w-full max-w-md">
+        <form onSubmit={submitSearch} className="relative mt-6 w-full max-w-md">
           <div className="relative overflow-hidden rounded-full bg-gradient-to-b from-[#e8dcc4] via-[#dccfb0] to-[#c9b88a] p-[2px] shadow-[0_8px_32px_rgba(180,150,90,0.35)]">
-            <div className="flex items-center gap-3 rounded-full bg-gradient-to-b from-[#f5eedf] to-[#ebe0cc] px-5 py-4">
+            <div className="flex items-center gap-3 rounded-full bg-gradient-to-b from-[#f5eedf] to-[#ebe0cc] px-5 py-3.5">
               <svg className="h-5 w-5 shrink-0 text-[#9a8560]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z" />
               </svg>
@@ -142,8 +124,7 @@ export function LuxuryHome() {
           </div>
         </form>
 
-        {/* Action icons */}
-        <div className="mt-8 flex items-center gap-8">
+        <div className="mt-5 flex items-center gap-8">
           <ActionButton label={messages.hero.payment} href="/chat">
             <svg className="h-6 w-6 text-[#5a7a8a]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -162,10 +143,9 @@ export function LuxuryHome() {
           </ActionButton>
         </div>
 
-        {/* Categories link */}
         <Link
           href="#categories"
-          className="mt-12 text-xs uppercase tracking-[0.25em] text-[#8a9a90] hover:text-[#2c6e55]"
+          className="mt-6 text-xs uppercase tracking-[0.25em] text-[#8a9a90] hover:text-[#2c6e55]"
         >
           {messages.cards.subtitle}
         </Link>

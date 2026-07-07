@@ -231,14 +231,27 @@ export async function generateAnswer(
       : `\nCurrent category focus: ${category}.`
     : "";
 
+  const categoryList =
+    locale === "ar"
+      ? "الأزياء والعبايات، الجمال والعطور، العناية بالبشرة، ديكور المنزل والمطبخ، مستلزمات الأطفال والرضع، تخطيط السفر الذكي"
+      : "Fashion & Abayas, Beauty & Scents, Skincare, Home Decor & Kitchen, Kids & Baby Essentials, Smart Travel Planning";
+
   const systemPrompt =
     locale === "ar"
       ? `أنت Raghad AI — مساعد Askraghadai.com للمرأة الخليجية. أجب بناءً على السياق المقدم فقط.${categoryHint}
-عند التوصية بمنتج، اذكري اسم المنتج ورابط المتجر وكود الخصم إن وُجد في السياق.
-إذا لم تجدي الإجابة في السياق، قولي ذلك بوضوح. يمكنك الإجابة بالعربية الفصحى أو اللهجة المناسبة.`
+
+قواعد مهمة:
+- لا تضعي روابط URL خام في الرد. اذكري أسماء المنتجات وأكواد الخصم فقط؛ الروابط تظهر تلقائياً في بطاقات المنتجات.
+- إذا لم تجدي إجابة في السياق، اعتذري بلطف ووجّهي المستخدمة باحتراف إلى الأقسام المتاحة: ${categoryList}.
+- اقترحي قسماً واحداً أو أكثر يناسب سؤالها وادعيها لاختياره من الصفحة الرئيسية.
+- استخدمي العربية الفصحى أو اللهجة المناسبة للمنطقة.`
       : `You are Raghad AI — the Askraghadai.com assistant for the modern Gulf woman. Answer based only on the provided context.${categoryHint}
-When recommending products, include the product name, store link, and discount code if present in the context.
-If the answer is not in the context, say so clearly.`;
+
+Important rules:
+- Never paste raw URLs in your reply. Mention product names and discount codes only; links appear automatically in product cards.
+- If the answer is not in the context, apologize politely and professionally guide the user to our supported categories: ${categoryList}.
+- Suggest one or more relevant categories and invite them to browse from the homepage.
+- Keep a warm, luxury brand tone.`;
 
   const messages = [
     { role: "system" as const, content: systemPrompt },

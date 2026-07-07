@@ -7,7 +7,17 @@
     "dashboard": "Dashboard",
     "login": "Login",
     "logout": "Logout",
-    "admin": "Admin"
+    "admin": "Admin",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "menu": "Menu",
+    "close": "Close"
+  },
+  "settings": {
+    "title": "Settings",
+    "region": "Country / Region",
+    "currency": "Currency",
+    "language": "Language"
   },
   "hero": {
     "title": "Smart answers tailored to your region",
@@ -26,7 +36,9 @@
     "title": "AI Assistant",
     "placeholder": "Ask your question in Arabic or English...",
     "send": "Send",
-    "exportPdf": "Export PDF"
+    "exportPdf": "Export PDF",
+    "visitLink": "Visit link",
+    "browseCategories": "Browse our categories:"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -77,5 +89,23 @@
     "ksa": "Saudi Arabia",
     "gcc": "Gulf (GCC)",
     "egypt": "Egypt"
+  },
+  "about": {
+    "title": "About Us",
+    "subtitle": "Raghad AI — your trusted smart guide for the modern Gulf woman in fashion, beauty, travel, and luxury living.",
+    "visionTitle": "Our Vision",
+    "visionBody": "To be the region's leading platform for intelligent, luxury recommendations that blend AI, trust, and elegance.",
+    "missionTitle": "Our Mission",
+    "missionBody": "To empower Gulf women with personalized AI guidance, trusted partner offers, and content tailored to each region.",
+    "contentNote": "Final content will be updated by the Raghad AI team."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We would love to hear from you. Fill in the form and we will get back to you soon.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Your message",
+    "send": "Send Message",
+    "contentNote": "The form will be activated once final content is received."
   }
 }
