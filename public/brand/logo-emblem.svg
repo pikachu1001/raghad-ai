@@ -50,13 +50,13 @@
     stroke-width="0.5"
   />
 
-  <!-- Petals  left cluster (magenta/purple) -->
+  <!-- Petals — left cluster (magenta/purple) -->
   <path d="M100 52 L108 78 L100 88 L92 78 Z" fill="url(#petalLeft)" stroke="#9a7b3c" stroke-width="0.4"/>
   <path d="M72 68 L96 82 L100 88 L80 96 Z" fill="url(#petalLeft)" stroke="#9a7b3c" stroke-width="0.4"/>
   <path d="M68 100 L88 96 L100 88 L88 80 Z" fill="url(#petalLeft)" stroke="#9a7b3c" stroke-width="0.4"/>
   <path d="M72 132 L80 96 L100 88 L96 118 Z" fill="url(#petalLeft)" stroke="#9a7b3c" stroke-width="0.4"/>
 
-  <!-- Petals  right cluster (cyan/blue) -->
+  <!-- Petals — right cluster (cyan/blue) -->
   <path d="M100 52 L112 78 L100 88 L88 78 Z" fill="url(#petalRight)" stroke="#9a7b3c" stroke-width="0.4"/>
   <path d="M128 68 L104 82 L100 88 L120 96 Z" fill="url(#petalRight)" stroke="#9a7b3c" stroke-width="0.4"/>
   <path d="M132 100 L112 96 L100 88 L112 80 Z" fill="url(#petalRight)" stroke="#9a7b3c" stroke-width="0.4"/>
