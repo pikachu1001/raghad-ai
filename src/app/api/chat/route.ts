@@ -11,6 +11,7 @@ import { toChatProduct } from "@/lib/products/types";
 import {
   getCategoryFallbackMessage,
   shouldSuggestCategories,
+  stripRawUrls,
 } from "@/lib/chat/fallback";
 
 export async function POST(request: Request) {
@@ -54,7 +55,8 @@ export async function POST(request: Request) {
 
     const expanded = expandQueryForRetrieval(query);
     const retrieved = await retrieveChunks(chunks, query, expanded);
-    const answer = await generateAnswer(query, retrieved, locale, category);
+    const rawAnswer = await generateAnswer(query, retrieved, locale, category);
+    const answer = stripRawUrls(rawAnswer);
     const suggestCategories = shouldSuggestCategories(answer);
 
     const dbProducts = await getProductsForChat(category);

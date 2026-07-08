@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { useApp } from "@/components/providers/AppProviders";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { SettingsMenu } from "@/components/layout/SettingsMenu";
@@ -37,16 +37,7 @@ export function Header() {
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link href="/" className="flex items-center gap-2">
-          <div className="relative h-9 w-9 shrink-0">
-            <Image
-              src="/brand/logo.png"
-              alt={messages.brand}
-              fill
-              sizes="36px"
-              className="object-contain"
-              priority
-            />
-          </div>
+          <BrandLogo size="sm" priority />
           <span className="hidden font-serif text-lg tracking-wide text-[#2c3e35] sm:inline">
             {messages.brand}
           </span>
@@ -78,7 +69,7 @@ export function Header() {
               {user.name ?? user.email}
             </span>
           )}
-          <SettingsMenu className="hidden sm:block" />
+          <SettingsMenu className="hidden lg:block" />
           <MobileNav className="lg:hidden" />
         </div>
       </div>

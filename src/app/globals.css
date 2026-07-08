@@ -41,6 +41,24 @@ body {
   text-align: start;
 }
 
+[dir="rtl"] .chat-bubble-user {
+  margin-inline-start: 2rem;
+  margin-inline-end: 0;
+}
+
+[dir="rtl"] .chat-bubble-assistant {
+  margin-inline-end: 2rem;
+  margin-inline-start: 0;
+}
+
+[dir="ltr"] .chat-bubble-user {
+  margin-inline-start: 2rem;
+}
+
+[dir="ltr"] .chat-bubble-assistant {
+  margin-inline-end: 2rem;
+}
+
 .luxury-page {
   background: var(--luxury-cream);
   color: var(--luxury-text);

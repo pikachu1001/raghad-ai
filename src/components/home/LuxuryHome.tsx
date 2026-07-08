@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { useApp } from "@/components/providers/AppProviders";
 import { SettingsMenu } from "@/components/layout/SettingsMenu";
 import { MobileNav } from "@/components/layout/MobileNav";
@@ -77,23 +77,13 @@ export function LuxuryHome() {
         Ai
       </span>
 
-      <header className="relative z-10 flex items-center justify-between px-5 pt-5">
-        <SettingsMenu />
-        <MobileNav />
+      <header className="relative z-10 flex items-center justify-end px-5 pt-5">
+        <MobileNav className="lg:hidden" />
+        <SettingsMenu className="hidden lg:block" />
       </header>
 
       <main className="relative z-10 mx-auto flex max-w-lg flex-col items-center px-6 pb-6 pt-2">
-        <div className="relative mb-2 h-40 w-40 sm:h-48 sm:w-48">
-          <Image
-            src="/brand/logo.png"
-            alt="Raghad AI"
-            fill
-            sizes="(max-width: 640px) 160px, 192px"
-            className="object-contain"
-            style={{ background: "transparent" }}
-            priority
-          />
-        </div>
+        <BrandLogo size="lg" className="mb-2" priority />
 
         <h1 className="text-center font-serif text-2xl tracking-[0.2em] text-[#2c3e35] sm:text-3xl">
           {locale === "ar" ? "رغد AI" : "RAGHAD AI"}

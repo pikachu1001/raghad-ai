@@ -1,29 +1,36 @@
 import { CATEGORIES } from "@/lib/categories";
 
 export function getCategoryFallbackMessage(locale: "en" | "ar"): string {
-  const list = CATEGORIES.map((c) => (locale === "ar" ? c.nameAr : c.nameEn)).join(
-    locale === "ar" ? " · " : " · "
-  );
+  const list = CATEGORIES.map((c, i) => {
+    const name = locale === "ar" ? c.nameAr : c.nameEn;
+    return locale === "ar" ? `${i + 1}. ${name}` : `${i + 1}. ${name}`;
+  }).join("\n");
 
   if (locale === "ar") {
-    return `عذراً، لا أملك معلومات كافية عن هذا الطلب حالياً. يمكنني مساعدتك في الأقسام التالية:\n\n${list}\n\nاختر قسماً من الصفحة الرئيسية أو اكتبي سؤالك ضمن أحد هذه المجالات.`;
+    return `شكراً لسؤالكِ — يسعدني مساعدتكِ.\n\nلم أجد تفاصيل كافية عن هذا الطلب في قاعدة معرفتنا حالياً، لكن يمكنني تقديم توصيات موثوقة ضمن الأقسام التالية:\n\n${list}\n\nاخترِي القسم الأنسب من الصفحة الرئيسية، أو اكتبي سؤالكِ ضمن أحد هذه المجالات وسأقدّم لكِ أفضل الخيارات بعناية.`;
   }
 
-  return `I'm sorry, I don't have enough information for that request right now. I can help you with these categories:\n\n${list}\n\nChoose a category from the homepage or ask your question within one of these areas.`;
+  return `Thank you for your question — I'm happy to help.\n\nI don't have enough detail on that topic in our knowledge base yet, but I can offer trusted recommendations across these categories:\n\n${list}\n\nBrowse the most relevant section from our homepage, or ask your question within one of these areas and I'll guide you to the best options.`;
 }
 
 const FALLBACK_PATTERNS = [
   /لا أملك معلومات/i,
   /لا تجدي الإجابة/i,
   /not in the context/i,
-  /don't have enough information/i,
-  /do not have enough information/i,
+  /don't have enough/i,
+  /do not have enough/i,
   /لا توجد بيانات/i,
   /غير متصل/i,
   /not connected/i,
   /not indexed/i,
   /الأقسام التالية/i,
   /these categories/i,
+  /لم أجد تفاصيل/i,
+  /don't have enough detail/i,
+  /يسعدني مساعدتك/i,
+  /happy to help/i,
+  /اخترِي القسم/i,
+  /browse the most relevant/i,
 ];
 
 export function shouldSuggestCategories(answer: string): boolean {

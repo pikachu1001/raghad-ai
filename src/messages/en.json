@@ -36,7 +36,7 @@
   "chat": {
     "title": "AI Assistant",
     "placeholder": "Ask your question in Arabic or English...",
-    "welcome": "Welcome! Ask me about fashion, beauty, travel, and more. Type your question below.",
+    "welcome": "Welcome! I'm Raghad — your smart guide for fashion, beauty, skincare, and travel. Ask your question below and I'll help you find the best recommendations.",
     "send": "Send",
     "exportPdf": "Export PDF",
     "visitLink": "Visit link",

@@ -1,27 +1,105 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useApp } from "@/components/providers/AppProviders";
 import type { Locale, Region } from "@/lib/i18n/types";
 
-export function SettingsMenu({ className = "" }: { className?: string }) {
+function SettingsForm() {
   const { messages, locale, region, setLocale, setRegion, regionConfig } = useApp();
+
+  return (
+    <>
+      <label className="mb-1 block text-xs text-[#7a8b82]">{messages.settings.region}</label>
+      <select
+        value={region}
+        onChange={(e) => setRegion(e.target.value as Region)}
+        className="luxury-input mb-3 text-sm"
+      >
+        <option value="ksa">{messages.region.ksa}</option>
+        <option value="gcc">{messages.region.gcc}</option>
+        <option value="egypt">{messages.region.egypt}</option>
+      </select>
+
+      <label className="mb-1 block text-xs text-[#7a8b82]">{messages.settings.currency}</label>
+      <div className="luxury-input mb-3 text-sm text-[#2c3e35]">
+        {regionConfig.currency} ({regionConfig.currencySymbol})
+      </div>
+
+      <label className="mb-1 block text-xs text-[#7a8b82]">{messages.settings.language}</label>
+      <select
+        value={locale}
+        onChange={(e) => setLocale(e.target.value as Locale)}
+        className="luxury-input text-sm"
+      >
+        <option value="ar">العربية</option>
+        <option value="en">English</option>
+      </select>
+    </>
+  );
+}
+
+export function SettingsMenu({ className = "" }: { className?: string }) {
+  const { messages, dir } = useApp();
   const [open, setOpen] = useState(false);
-  const panelRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!open) return;
-    const onClick = (e: MouseEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
     };
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const overlay = open && mounted ? (
+    createPortal(
+      <>
+        <div
+          className="fixed inset-0 z-[200] bg-black/35 backdrop-blur-sm"
+          onClick={() => setOpen(false)}
+          aria-hidden
+        />
+        <div
+          dir={dir}
+          role="dialog"
+          aria-modal="true"
+          aria-label={messages.settings.title}
+          className="fixed inset-x-4 top-[max(1rem,env(safe-area-inset-top))] z-[210] mx-auto max-w-sm overflow-hidden rounded-2xl border border-[#c9a962]/30 bg-gradient-to-b from-[#faf6ef] to-[#f5eedf] p-5 shadow-[0_16px_48px_rgba(180,150,90,0.3)] lg:inset-x-auto lg:end-6 lg:top-[4.5rem] lg:mx-0 lg:w-72"
+        >
+          <div className="mb-4 flex items-start justify-between gap-3 border-b border-[#ddd0b8]/50 pb-3">
+            <div>
+              <p className="font-serif text-base tracking-wide text-[#2c3e35]">{messages.settings.title}</p>
+              <p className="mt-1 text-xs text-[#9a8560]">{messages.settings.subtitle}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-2 py-1 text-sm text-[#7a8b82] hover:bg-[#f3ece0]"
+            >
+              {messages.nav.close}
+            </button>
+          </div>
+          <SettingsForm />
+        </div>
+      </>,
+      document.body
+    )
+  ) : null;
+
   return (
-    <div ref={panelRef} className={`relative ${className}`}>
+    <div dir={dir} className={className}>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -40,41 +118,7 @@ export function SettingsMenu({ className = "" }: { className?: string }) {
         </svg>
         <span className="hidden sm:inline">{messages.settings.title}</span>
       </button>
-
-      {open && (
-        <div className="absolute start-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-xl border border-[#c9a962]/30 bg-gradient-to-b from-[#faf6ef] to-[#f5eedf] p-5 shadow-[0_12px_40px_rgba(180,150,90,0.25)]">
-          <div className="mb-4 border-b border-[#ddd0b8]/50 pb-3">
-            <p className="font-serif text-base tracking-wide text-[#2c3e35]">{messages.settings.title}</p>
-            <p className="mt-1 text-xs text-[#9a8560]">{messages.settings.subtitle}</p>
-          </div>
-
-          <label className="mb-1 block text-xs text-[#7a8b82]">{messages.settings.region}</label>
-          <select
-            value={region}
-            onChange={(e) => setRegion(e.target.value as Region)}
-            className="luxury-input mb-3 text-sm"
-          >
-            <option value="ksa">{messages.region.ksa}</option>
-            <option value="gcc">{messages.region.gcc}</option>
-            <option value="egypt">{messages.region.egypt}</option>
-          </select>
-
-          <label className="mb-1 block text-xs text-[#7a8b82]">{messages.settings.currency}</label>
-          <div className="luxury-input mb-3 text-sm text-[#2c3e35]">
-            {regionConfig.currency} ({regionConfig.currencySymbol})
-          </div>
-
-          <label className="mb-1 block text-xs text-[#7a8b82]">{messages.settings.language}</label>
-          <select
-            value={locale}
-            onChange={(e) => setLocale(e.target.value as Locale)}
-            className="luxury-input text-sm"
-          >
-            <option value="ar">العربية</option>
-            <option value="en">English</option>
-          </select>
-        </div>
-      )}
+      {overlay}
     </div>
   );
 }

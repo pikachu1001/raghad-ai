@@ -66,8 +66,8 @@ export function ChatPanel() {
           role: "assistant",
           content:
             locale === "ar"
-              ? "عذراً، حدث خطأ. يرجى المحاولة مرة أخرى أو اختيار أحد أقسامنا من الصفحة الرئيسية."
-              : "Sorry, something went wrong. Please try again or browse our categories from the homepage.",
+              ? "عذراً، حدث خطأ تقني بسيط. يسعدني مساعدتكِ — جرّبي اختيار أحد أقسامنا من الصفحة الرئيسية، أو أعدي إرسال سؤالكِ وسأكون معكِ."
+              : "Sorry, a small technical issue occurred. I'm still here to help — try browsing our categories from the homepage, or send your question again.",
           suggestCategories: true,
         },
       ]);
@@ -118,10 +118,10 @@ export function ChatPanel() {
             {history.map((msg, i) => (
               <div key={i}>
                 <div
-                  className={`rounded-xl px-4 py-3 text-sm ${
+                  className={`chat-bubble-${msg.role} rounded-xl px-4 py-3 text-sm ${
                     msg.role === "user"
-                      ? "ms-8 bg-[#2c6e55]/10 text-[#1f5240]"
-                      : "me-8 bg-white text-[#2c3e35]"
+                      ? "bg-[#2c6e55]/10 text-[#1f5240]"
+                      : "bg-white text-[#2c3e35]"
                   }`}
                 >
                   {msg.role === "user" ? (
@@ -135,7 +135,7 @@ export function ChatPanel() {
                   )}
                 </div>
                 {msg.suggestCategories && (
-                  <div className="me-8">
+                  <div className="chat-bubble-assistant">
                     <CategorySuggestions
                       locale={locale}
                       title={messages.chat.browseCategories}
@@ -143,7 +143,7 @@ export function ChatPanel() {
                   </div>
                 )}
                 {msg.products && msg.products.length > 0 && (
-                  <div className="me-8 mt-3 grid gap-3 sm:grid-cols-2">
+                  <div className="chat-bubble-assistant mt-3 grid gap-3 sm:grid-cols-2">
                     {msg.products.map((p) => (
                       <ChatProductCard key={p.id} product={p} />
                     ))}
