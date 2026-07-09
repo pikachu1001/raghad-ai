@@ -1,4 +1,5 @@
 import { CATEGORIES } from "@/lib/categories";
+import { normalizeAnswerText } from "@/lib/text/normalize";
 
 export function getCategoryFallbackMessage(locale: "en" | "ar"): string {
   const list = CATEGORIES.map((c, i) => {
@@ -38,9 +39,11 @@ export function shouldSuggestCategories(answer: string): boolean {
 }
 
 export function stripRawUrls(text: string): string {
-  return text
-    .replace(/\[([^\]]+)\]\(https?:\/\/[^)]+\)/g, "$1")
-    .replace(/https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi, "")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
+  return normalizeAnswerText(
+    text
+      .replace(/\[([^\]]+)\]\(https?:\/\/[^)]+\)/g, "$1")
+      .replace(/https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi, "")
+      .replace(/\n{3,}/g, "\n\n")
+      .trim()
+  );
 }

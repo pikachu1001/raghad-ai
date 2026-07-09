@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db/prisma";
+import { authErrorMessage } from "@/lib/auth/errors";
 import { COOKIE_NAME, createSessionToken } from "@/lib/auth/session";
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const body = await request.json();
+    const email = String(body.email ?? "").trim().toLowerCase();
+    const password = String(body.password ?? "");
 
     if (!email || !password) {
       return NextResponse.json({ error: "Email and password required" }, { status: 400 });
@@ -13,12 +16,12 @@ export async function POST(request: Request) {
 
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
     }
 
     const valid = await bcrypt.compare(password, user.passwordHash);
     if (!valid) {
-      return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
     }
 
     const token = await createSessionToken({ userId: user.id, email: user.email });
@@ -34,8 +37,8 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[login]", error);
     return NextResponse.json(
-      { error: "Login unavailable — database may not be configured yet" },
-      { status: 503 }
+      { error: authErrorMessage(error, "Login failed. Please try again.") },
+      { status: 503 },
     );
   }
 }

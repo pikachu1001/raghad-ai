@@ -14,7 +14,7 @@ export type ProductCardItem = {
 };
 
 export function ProductCard({ item }: { item: ProductCardItem }) {
-  const { locale } = useApp();
+  const { locale, messages } = useApp();
   const title = locale === "ar" ? item.titleAr : item.titleEn;
   const description = locale === "ar" ? item.descriptionAr : item.descriptionEn;
 
@@ -27,7 +27,7 @@ export function ProductCard({ item }: { item: ProductCardItem }) {
           href={item.href}
           className="rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-4 py-1.5 text-sm font-medium text-white hover:opacity-90"
         >
-          {locale === "ar" ? "استكشفي" : "Explore"}
+          {messages.cards.explore}
         </Link>
       </div>
     </article>

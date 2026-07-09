@@ -55,6 +55,8 @@ export function ChatPanel() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<SpeechRecognitionLike | null>(null);
   const actionHandled = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const inputPlaceholder =
     locale === "ar" ? messages.chat.placeholder : messages.chat.placeholder;
@@ -113,6 +115,19 @@ export function ChatPanel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
+  useEffect(() => {
+    const scrollActiveField = () => {
+      window.setTimeout(() => {
+        inputRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+        formRef.current?.scrollIntoView({ block: "end", behavior: "smooth" });
+      }, 250);
+    };
+
+    const viewport = window.visualViewport;
+    viewport?.addEventListener("resize", scrollActiveField);
+    return () => viewport?.removeEventListener("resize", scrollActiveField);
+  }, []);
+
   const sendMessage = async () => {
     if ((!input.trim() && !image) || loading) return;
     const userMessage = input.trim();
@@ -148,7 +163,7 @@ export function ChatPanel() {
           role: "assistant",
           content:
             locale === "ar"
-              ? "عذراً، حدث خطأ تقني بسيط. يسعدني مساعدتكِ — جرّبي إعادة إرسال سؤالكِ وسأكون معكِ."
+              ? "عذراً، حدث خطأ تقني بسيط. يسعدني مساعدتك — جرّب إعادة إرسال سؤالك وسأكون معك."
               : "Sorry, a small technical issue occurred. I'm still here to help — try sending your question again.",
           suggestCategories: true,
         },
@@ -178,7 +193,7 @@ export function ChatPanel() {
   };
 
   return (
-    <div className="luxury-page mx-auto flex max-w-3xl flex-col gap-4 px-4 py-8" dir={dir}>
+    <div className="luxury-page mx-auto flex max-w-3xl flex-col gap-4 px-4 py-8 pb-[max(2rem,env(safe-area-inset-bottom))]" dir={dir}>
       <div className="flex items-center justify-between gap-3">
         <h1 className="font-serif text-2xl tracking-wide text-[#2c3e35]">{messages.chat.title}</h1>
         {history.length > 0 && (
@@ -268,7 +283,8 @@ export function ChatPanel() {
       )}
 
       <form
-        className="luxury-search-bar"
+        ref={formRef}
+        className="luxury-search-bar sticky bottom-0 z-20 bg-[#f3ece0]/95 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur"
         onSubmit={(e) => {
           e.preventDefault();
           sendMessage();
@@ -315,8 +331,14 @@ export function ChatPanel() {
           </button>
 
           <input
+            ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
+            onFocus={() => {
+              window.setTimeout(() => {
+                inputRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+              }, 300);
+            }}
             placeholder={inputPlaceholder}
             dir={dir}
             aria-label={messages.chat.title}

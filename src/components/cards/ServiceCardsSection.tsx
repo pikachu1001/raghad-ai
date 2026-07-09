@@ -19,7 +19,7 @@ export const CATEGORY_ITEMS: ProductCardItem[] = [
     titleEn: "Beauty & Scents",
     titleAr: "الجمال والعطور",
     descriptionEn: "Discover perfumes, makeup, and beauty essentials with affiliate deals.",
-    descriptionAr: "اكتشفي العطور والمكياج وأساسيات الجمال مع عروض الشركاء.",
+    descriptionAr: "اكتشف العطور والمكياج وأساسيات الجمال مع عروض الشركاء.",
     price: 0,
     href: "/chat?category=beauty",
   },

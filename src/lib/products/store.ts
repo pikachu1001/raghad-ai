@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db/prisma";
 
-export const CHAT_PRODUCTS_LIMIT = 6;
+export const CHAT_PRODUCTS_LIMIT = 2;
 
 export async function getProductsForChat(
   category?: string,

@@ -188,7 +188,7 @@ export function LuxuryHome() {
 
             <form onSubmit={submitSearch} className="mt-12 w-full max-w-md md:hidden">
               <div className="relative overflow-hidden rounded-full bg-gradient-to-b from-[#e8dcc4] via-[#dccfb0] to-[#c9b88a] p-[2px] shadow-[0_8px_32px_rgba(180,150,90,0.35)]">
-                <div className="flex items-center gap-3 rounded-full bg-gradient-to-b from-[#f5eedf] to-[#ebe0cc] px-5 py-3.5">
+                <div className="flex items-center gap-2 rounded-full bg-gradient-to-b from-[#f5eedf] to-[#ebe0cc] py-2 pe-2 ps-5">
                   <svg
                     className="h-5 w-5 shrink-0 text-[#8a7550]"
                     fill="none"
@@ -209,6 +209,12 @@ export function LuxuryHome() {
                     className="w-full bg-transparent text-sm text-[#3d4f45] outline-none placeholder:text-[#7d7358]"
                     dir="rtl"
                   />
+                  <button
+                    type="submit"
+                    className="shrink-0 rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_2px_10px_rgba(31,82,64,0.4)] transition hover:from-[#337d61] hover:to-[#24614b]"
+                  >
+                    {messages.hero.searchButton}
+                  </button>
                 </div>
               </div>
               <div aria-hidden className="mt-3 flex justify-center gap-1 opacity-60">

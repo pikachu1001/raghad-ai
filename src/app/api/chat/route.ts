@@ -14,6 +14,8 @@ import {
   getCategoryFallbackMessage,
   stripRawUrls,
 } from "@/lib/chat/fallback";
+import { getSession } from "@/lib/auth/session";
+import { persistChatExchange } from "@/lib/chat/persist";
 
 export const maxDuration = 60;
 
@@ -55,6 +57,15 @@ export async function POST(request: Request) {
       ? await generateVisionAnswer(query, image, retrieved, locale, category)
       : await generateAnswer(query, retrieved, locale, category);
     const answer = stripRawUrls(rawAnswer);
+
+    const session = await getSession();
+    if (session && query) {
+      try {
+        await persistChatExchange(session.userId, query, answer);
+      } catch (persistError) {
+        console.error("[chat] persist", persistError);
+      }
+    }
 
     const dbProducts = await getProductsForChat(category);
     const products = dbProducts.map((p) => toChatProduct(p, locale));

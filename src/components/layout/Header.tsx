@@ -29,6 +29,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
 export function Header() {
   const { messages, dir } = useApp();
   const { user, logout } = useAuth();
+  const pathname = usePathname();
 
   return (
     <header
@@ -36,16 +37,35 @@ export function Header() {
       className="sticky top-0 z-50 border-b border-[#ddd0b8]/50 bg-[#faf6ef]/95 backdrop-blur"
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-        <Link href="/" className="flex items-center" aria-label={messages.brand}>
-          <BrandLockup height={44} priority />
-        </Link>
+        <div className="flex items-center gap-3">
+          {pathname !== "/" && (
+            <Link
+              href="/"
+              aria-label={messages.nav.home}
+              title={messages.nav.home}
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#ddd0b8]/60 bg-white/70 text-[#2c6e55] transition hover:border-[#c9a962]/60 hover:bg-white"
+            >
+              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.8}
+                  d="M3 12l9-9 9 9M5 10v10h14V10"
+                />
+              </svg>
+            </Link>
+          )}
+          <Link href="/" className="flex items-center" aria-label={messages.brand}>
+            <BrandLockup height={44} priority />
+          </Link>
+        </div>
 
         <nav className="hidden items-center gap-1 lg:flex">
           <NavLink href="/" label={messages.nav.home} />
           <NavLink href="/chat" label={messages.nav.chat} />
           <NavLink href="/about" label={messages.nav.about} />
           <NavLink href="/contact" label={messages.nav.contact} />
-          <NavLink href="/dashboard" label={messages.nav.dashboard} />
+          {user && <NavLink href="/dashboard" label={messages.nav.dashboard} />}
           {user?.isAdmin && <NavLink href="/admin" label={messages.nav.admin} />}
           {user ? (
             <button

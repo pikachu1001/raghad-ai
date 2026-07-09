@@ -20,4 +20,9 @@ $response = Invoke-RestMethod -Uri "https://api.openai.com/v1/chat/completions" 
   -Body $bodyBytes `
   -TimeoutSec 90
 
-Write-Output $response.choices[0].message.content
+# Ensure UTF-8 on stdout (avoids Here???s instead of Here's on Windows)
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+$content = $response.choices[0].message.content
+$utf8 = New-Object System.Text.UTF8Encoding $false
+[Console]::OpenStandardOutput().Write($utf8.GetBytes($content), 0, $utf8.GetByteCount($content))

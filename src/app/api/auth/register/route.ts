@@ -1,14 +1,22 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db/prisma";
+import { authErrorMessage } from "@/lib/auth/errors";
 import { COOKIE_NAME, createSessionToken } from "@/lib/auth/session";
 
 export async function POST(request: Request) {
   try {
-    const { email, password, name } = await request.json();
+    const body = await request.json();
+    const email = String(body.email ?? "").trim().toLowerCase();
+    const password = String(body.password ?? "");
+    const name = body.name ? String(body.name).trim() : null;
 
     if (!email || !password) {
       return NextResponse.json({ error: "Email and password required" }, { status: 400 });
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json({ error: "Password must be at least 6 characters" }, { status: 400 });
     }
 
     const existing = await prisma.user.findUnique({ where: { email } });
@@ -18,7 +26,7 @@ export async function POST(request: Request) {
 
     const passwordHash = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { email, passwordHash, name: name ?? null },
+      data: { email, passwordHash, name },
     });
 
     const token = await createSessionToken({ userId: user.id, email: user.email });
@@ -34,8 +42,8 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[register]", error);
     return NextResponse.json(
-      { error: "Registration unavailable — database may not be configured yet" },
-      { status: 503 }
+      { error: authErrorMessage(error, "Registration failed. Please try again.") },
+      { status: 503 },
     );
   }
 }

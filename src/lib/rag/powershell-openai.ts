@@ -15,7 +15,7 @@ export async function chatViaPowerShell(payload: object): Promise<string> {
     const { stdout } = await execFileAsync(
       "powershell",
       ["-ExecutionPolicy", "Bypass", "-File", scriptPath, "-PayloadPath", tmpFile],
-      { timeout: 95_000, maxBuffer: 2 * 1024 * 1024 }
+      { timeout: 95_000, maxBuffer: 2 * 1024 * 1024, encoding: "utf8" }
     );
     return stdout.trim();
   } finally {

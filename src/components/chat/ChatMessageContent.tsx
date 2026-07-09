@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/categories";
+import { MarkdownContent } from "@/lib/markdown/render";
 
 type Segment =
   | { type: "text"; value: string }
@@ -53,23 +54,21 @@ export function ChatMessageContent({
 
   return (
     <div className="space-y-2">
-      <div className="whitespace-pre-wrap leading-relaxed">
-        {segments.map((seg, i) =>
-          seg.type === "text" ? (
-            <span key={i}>{seg.value}</span>
-          ) : (
-            <a
-              key={i}
-              href={seg.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mx-0.5 inline-flex items-center rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-3 py-0.5 text-xs font-medium text-white hover:opacity-90"
-            >
-              {seg.label || linkLabel}
-            </a>
-          )
-        )}
-      </div>
+      {segments.map((seg, i) =>
+        seg.type === "text" ? (
+          <MarkdownContent key={i} content={seg.value} />
+        ) : (
+          <a
+            key={i}
+            href={seg.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mx-0.5 inline-flex items-center rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-3 py-0.5 text-xs font-medium text-white hover:opacity-90"
+          >
+            {seg.label || linkLabel}
+          </a>
+        ),
+      )}
     </div>
   );
 }

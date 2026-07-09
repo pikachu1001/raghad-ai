@@ -5,25 +5,19 @@ import type { ChatProduct } from "@/lib/products/types";
 import { useApp } from "@/components/providers/AppProviders";
 
 export function ChatProductCard({ product }: { product: ChatProduct }) {
-  const { locale } = useApp();
+  const { messages } = useApp();
 
   return (
     <article className="overflow-hidden rounded-xl border border-[#ddd0b8]/60 bg-white shadow-sm">
-      {product.imageUrl ? (
-        <div className="relative h-36 w-full bg-[#f3ece0]">
-          <Image
-            src={product.imageUrl}
-            alt={product.name}
-            fill
-            className="object-cover"
-            unoptimized
-          />
-        </div>
-      ) : (
-        <div className="flex h-36 items-center justify-center bg-gradient-to-br from-[#f3ece0] to-[#e8dcc4]">
-          <span className="font-serif text-2xl text-[#c9a962]/60">R</span>
-        </div>
-      )}
+      <div className="relative h-36 w-full bg-[#f3ece0]">
+        <Image
+          src={product.imageUrl ?? "/brand/mark.png"}
+          alt={product.name}
+          fill
+          className="object-contain p-4"
+          unoptimized={Boolean(product.imageUrl)}
+        />
+      </div>
       <div className="p-4">
         <h3 className="font-semibold text-[#2c3e35]">{product.name}</h3>
         {product.description && (
@@ -48,7 +42,7 @@ export function ChatProductCard({ product }: { product: ChatProduct }) {
             rel="noopener noreferrer"
             className="mt-3 inline-flex rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-4 py-1.5 text-xs font-medium text-white hover:opacity-90"
           >
-            {locale === "ar" ? "تسوقي الآن" : "Shop now"}
+            {messages.products.shopNow}
           </a>
         )}
       </div>

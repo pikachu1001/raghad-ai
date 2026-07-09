@@ -32,7 +32,11 @@
   },
   "cards": {
     "title": "Our Categories",
-    "subtitle": "6 sectors tailored for the modern Gulf woman"
+    "subtitle": "6 sectors tailored for modern users in the region",
+    "explore": "Explore"
+  },
+  "products": {
+    "shopNow": "Shop now"
   },
   "chat": {
     "title": "AI Assistant",
@@ -50,7 +54,8 @@
     "welcome": "Welcome back",
     "conversations": "Your conversations",
     "empty": "No conversations yet. Start chatting to see history here.",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "messages": "messages"
   },
   "admin": {
     "title": "Admin Panel",
@@ -86,6 +91,8 @@
     "name": "Name",
     "submitLogin": "Sign in",
     "submitRegister": "Register",
+    "submitting": "Please wait...",
+    "requestFailed": "Request failed. Please try again.",
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?"
   },
@@ -97,12 +104,12 @@
   },
   "about": {
     "title": "About Us",
-    "subtitle": "Raghad AI — your trusted smart guide for the modern Gulf woman in fashion, beauty, travel, and luxury living.",
+    "subtitle": "Raghad AI — your trusted smart guide for fashion, beauty, travel, and luxury living.",
     "visionTitle": "Our Vision",
     "visionBody": "To be the region's leading platform for intelligent, luxury recommendations that blend AI, trust, and elegance.",
     "missionTitle": "Our Mission",
-    "missionBody": "To empower Gulf women with personalized AI guidance, trusted partner offers, and content tailored to each region.",
-    "contentNote": "Final content will be updated by the Raghad AI team."
+    "missionBody": "To empower users with personalized AI guidance, trusted partner offers, and content tailored to each region.",
+    "contentNote": "Content is updated periodically to ensure the best recommendations."
   },
   "contact": {
     "title": "Contact Us",
@@ -140,5 +147,8 @@
         "a": "Recommendations appear as clean product cards with trusted store links and discount codes from our verified affiliate partners — no raw links, ever."
       }
     ]
+  },
+  "footer": {
+    "note": "Content is updated periodically to ensure the best recommendations."
   }
 }
