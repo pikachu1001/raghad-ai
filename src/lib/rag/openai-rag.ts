@@ -217,18 +217,11 @@ export async function retrieveChunks(
   return merged.map((r) => r.item);
 }
 
-export async function generateAnswer(
-  query: string,
-  contextChunks: IndexedChunk[],
-  locale: "en" | "ar" = "en",
-  category?: string
-): Promise<string> {
-  const context = contextChunks.map((c) => c.content).join("\n\n---\n\n");
-
+function buildSystemPrompt(locale: "en" | "ar", category?: string): string {
   const categoryHint = category
     ? locale === "ar"
-      ? `\nالقسم الحالي: ${category}.`
-      : `\nCurrent category focus: ${category}.`
+      ? `\nالقسم الحالي الذي تتصفحه المستخدمة: ${category}. ركّزي توصياتك فيه عند المناسبة.`
+      : `\nThe user is currently browsing this category: ${category}. Prioritise it where relevant.`
     : "";
 
   const categoryList =
@@ -236,37 +229,50 @@ export async function generateAnswer(
       ? "الأزياء والعبايات، الجمال والعطور، العناية بالبشرة، ديكور المنزل والمطبخ، مستلزمات الأطفال والرضع، تخطيط السفر الذكي"
       : "Fashion & Abayas, Beauty & Scents, Skincare, Home Decor & Kitchen, Kids & Baby Essentials, Smart Travel Planning";
 
-  const systemPrompt =
-    locale === "ar"
-      ? `أنتِ Raghad AI — مستشارة Askraghadai.com الذكية للمرأة الخليجية العصرية. شخصيتكِ راقية، دافئة، ومحترفة — كأفضل صديقة خبيرة في الموضة والجمال والسفر.${categoryHint}
+  return locale === "ar"
+    ? `أنتِ رغد (Raghad AI) — المستشارة الذكية الفاخرة في Askraghadai.com للمرأة الخليجية العصرية. أنتِ خبيرة واثقة ودافئة في الموضة والجمال والعناية بالبشرة والمنزل ومستلزمات الأطفال والسفر.${categoryHint}
+
+مهمتك: قدّمي إجابة مباشرة ومفيدة وشخصية داخل المحادثة — نصائح، توصيات، خطط سفر (Itineraries)، روتين عناية، وأفكار عملية.
 
 قواعد الرد:
-- اعتمدي على السياق المقدم فقط عند الإجابة على أسئلة محددة.
-- لا تضعي روابط URL خام. اذكري أسماء المنتجات وأكواد الخصم فقط؛ الروابط تظهر تلقائياً في بطاقات المنتجات.
-- إذا لم تجدي إجابة كافية في السياق، لا ترفضي الطلب بجفاء. اعتذري بلطف، ثم وجّهي المستخدمة باحتراف إلى الأقسام المتاحة: ${categoryList}.
-- اقترحي قسماً أو أكثر يناسب سؤالها، وادعيها لاستكشافه من الصفحة الرئيسية أو بطاقات الأقسام.
-- استخدمي العربية الفصحى السهلة مع لمسة خليجية راقية عند الحاجة.
-- اختتمي دائماً بجملة تشجيعية قصيرة تدعوها للخطوة التالية.`
-      : `You are Raghad AI — the trusted smart advisor at Askraghadai.com for the modern Gulf woman. Your tone is warm, polished, and professional — like a knowledgeable friend in fashion, beauty, and travel.${categoryHint}
+- أجيبي دائماً بشكل مباشر ومفصّل. لا تكتفي بإحالة المستخدمة إلى القوائم أو الأقسام.
+- استخدمي "معلومات قاعدة المعرفة" أدناه كمصدر أساسي عندما تكون ذات صلة. إن لم تكن كافية، اعتمدي على خبرتك العامة لتقديم نصيحة ذكية وواقعية.
+- نسّقي الرد بفقرات قصيرة أو نقاط، ولخطط السفر استخدمي تقسيماً واضحاً (يوم ١، يوم ٢...).
+- لا تضعي روابط URL خام أبداً. اذكري أسماء المنتجات أو المتاجر وأكواد الخصم فقط؛ الروابط تظهر تلقائياً في بطاقات المنتجات أسفل الرد.
+- يمكنكِ اقتراح قسم مناسب بشكل طبيعي ضمن النصيحة، لكن بعد تقديم إجابة حقيقية أولاً.
+- استخدمي العربية الفصحى السهلة مع لمسة خليجية راقية.
+- اختتمي بسؤال أو دعوة لطيفة لمواصلة المساعدة.
+- الأقسام المتاحة عند الحاجة: ${categoryList}.`
+    : `You are Raghad (Raghad AI) — the luxury smart advisor at Askraghadai.com for the modern Gulf woman. You are a confident, warm expert in fashion, beauty, skincare, home, kids' essentials, and travel.${categoryHint}
+
+Your job: give a direct, useful, personalised answer inside the chat — advice, recommendations, travel itineraries, skincare routines, and practical ideas.
 
 Response rules:
-- Answer specific questions using only the provided context.
-- Never paste raw URLs. Mention product names and discount codes only; links appear automatically in product cards.
-- If the context does not cover the question, never refuse bluntly. Apologize gently, then professionally guide the user to our supported categories: ${categoryList}.
-- Suggest one or more relevant categories and invite them to explore from the homepage or category cards.
-- Keep a luxury brand voice — helpful, confident, and encouraging.
-- Always end with a brief, inviting next step.`;
+- Always answer directly and in detail. Never just redirect the user to menus or categories.
+- Use the "Knowledge base" information below as your primary source when relevant. If it is insufficient, rely on your own expertise to give smart, realistic advice.
+- Format with short paragraphs or bullet points; for travel, use a clear day-by-day itinerary (Day 1, Day 2...).
+- Never paste raw URLs. Mention product or store names and discount codes only; links appear automatically in the product cards below your reply.
+- You may naturally suggest a relevant category, but only after giving a real answer first.
+- Keep an elegant, luxury brand voice.
+- End with a friendly question or invitation to continue helping.
+- Available categories when useful: ${categoryList}.`;
+}
 
-  const messages = [
-    { role: "system" as const, content: systemPrompt },
-    { role: "user" as const, content: `Context:\n${context}\n\nQuestion: ${query}` },
-  ];
+function buildUserContent(query: string, context: string, locale: "en" | "ar"): string {
+  const label = locale === "ar" ? "معلومات قاعدة المعرفة" : "Knowledge base";
+  const none = locale === "ar" ? "(لا توجد معلومات محددة — اعتمدي على خبرتك)" : "(No specific entries — use your expertise)";
+  const questionLabel = locale === "ar" ? "سؤال المستخدمة" : "User question";
+  return `${label}:\n${context.trim() || none}\n\n${questionLabel}: ${query}`;
+}
 
-  const chatPayload = { model: CHAT_MODEL, messages, temperature: 0.3 };
-
+async function runChat(chatPayload: {
+  model: string;
+  messages: unknown[];
+  temperature: number;
+}): Promise<string> {
   if (shouldUsePowerShellOpenAI()) {
     try {
-      return await chatViaPowerShell(chatPayload);
+      return await chatViaPowerShell(chatPayload as never);
     } catch (error) {
       console.warn("[rag] PowerShell chat failed:", error);
     }
@@ -275,26 +281,90 @@ Response rules:
   try {
     const client = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY!.trim(),
-      timeout: 30_000,
+      timeout: 45_000,
       maxRetries: 0,
     });
-    const response = await client.chat.completions.create(chatPayload);
-    return response.choices[0]?.message?.content ?? "";
+    const response = await client.chat.completions.create(chatPayload as never);
+    return (response as { choices: { message: { content: string } }[] }).choices[0]?.message?.content ?? "";
   } catch (error) {
     if (!isNetworkError(error)) throw error;
     console.warn("[rag] Chat SDK failed, trying HTTPS...");
-    try {
-      const response = await openaiPostViaHttps<{
-        choices: { message: { content: string } }[];
-      }>("/v1/chat/completions", chatPayload);
-      return response.choices[0]?.message?.content ?? "";
-    } catch (httpsError) {
-      console.warn("[rag] Chat HTTPS failed, returning context excerpt:", httpsError);
-      if (locale === "ar") {
-        return `أنا Raghad AI — مساعد Askraghadai.com للمرأة الخليجية.\n\n${contextChunks[0]?.content ?? "تعذر الاتصال بخدمة AI."}`;
-      }
-      return `I am Raghad AI — your Askraghadai.com assistant for the modern Gulf woman.\n\n${contextChunks[0]?.content ?? "Could not reach AI service."}`;
+    const response = await openaiPostViaHttps<{
+      choices: { message: { content: string } }[];
+    }>("/v1/chat/completions", chatPayload);
+    return response.choices[0]?.message?.content ?? "";
+  }
+}
+
+export async function generateAnswer(
+  query: string,
+  contextChunks: IndexedChunk[],
+  locale: "en" | "ar" = "en",
+  category?: string
+): Promise<string> {
+  const context = contextChunks.map((c) => c.content).join("\n\n---\n\n");
+
+  const messages = [
+    { role: "system" as const, content: buildSystemPrompt(locale, category) },
+    { role: "user" as const, content: buildUserContent(query, context, locale) },
+  ];
+
+  const chatPayload = { model: CHAT_MODEL, messages, temperature: 0.5 };
+
+  try {
+    return await runChat(chatPayload);
+  } catch (error) {
+    console.warn("[rag] Chat failed:", error);
+    if (locale === "ar") {
+      return contextChunks[0]?.content
+        ? `إليكِ ما يمكنني مشاركته الآن:\n\n${contextChunks[0].content}`
+        : "عذراً، تعذّر الاتصال بخدمة الذكاء الاصطناعي للحظات. يرجى إعادة إرسال سؤالكِ وسأساعدكِ فوراً.";
     }
+    return contextChunks[0]?.content
+      ? `Here is what I can share right now:\n\n${contextChunks[0].content}`
+      : "Sorry, I couldn't reach the AI service for a moment. Please resend your question and I'll help right away.";
+  }
+}
+
+export async function generateVisionAnswer(
+  query: string,
+  imageDataUrl: string,
+  contextChunks: IndexedChunk[],
+  locale: "en" | "ar" = "en",
+  category?: string
+): Promise<string> {
+  const context = contextChunks.map((c) => c.content).join("\n\n---\n\n");
+  const defaultQuery =
+    locale === "ar"
+      ? "حلّلي هذه الصورة وقدّمي توصيات مناسبة."
+      : "Analyse this image and give suitable recommendations.";
+
+  const messages = [
+    { role: "system" as const, content: buildSystemPrompt(locale, category) },
+    {
+      role: "user" as const,
+      content: [
+        { type: "text", text: buildUserContent(query || defaultQuery, context, locale) },
+        { type: "image_url", image_url: { url: imageDataUrl } },
+      ],
+    },
+  ];
+
+  const chatPayload = { model: CHAT_MODEL, messages, temperature: 0.5 };
+
+  try {
+    const client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY!.trim(),
+      timeout: 60_000,
+      maxRetries: 1,
+    });
+    const response = await client.chat.completions.create(chatPayload as never);
+    return (response as { choices: { message: { content: string } }[] }).choices[0]?.message?.content ?? "";
+  } catch (error) {
+    console.warn("[rag] Vision chat failed:", error);
+    return locale === "ar"
+      ? "عذراً، تعذّر تحليل الصورة الآن. يمكنكِ وصف ما تبحثين عنه نصياً وسأساعدكِ فوراً."
+      : "Sorry, I couldn't analyse the image right now. Describe what you're looking for and I'll help right away.";
   }
 }
 

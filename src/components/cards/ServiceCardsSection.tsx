@@ -62,10 +62,14 @@ export const CATEGORY_ITEMS: ProductCardItem[] = [
 ];
 
 export function ServiceCardsSection() {
-  const { messages } = useApp();
+  const { messages, locale } = useApp();
 
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-8 pt-2">
+    <section
+      className={`mx-auto max-w-6xl px-4 pb-8 ${
+        locale === "ar" ? "pt-8 sm:pt-10 md:pt-4" : "pt-6 sm:pt-8 md:pt-4"
+      }`}
+    >
       <div className="mb-6 text-center">
         <h2 className="font-serif text-2xl tracking-wide text-[#2c3e35]">{messages.cards.title}</h2>
         <p className="mt-2 text-sm text-[#7a8b82]">{messages.cards.subtitle}</p>

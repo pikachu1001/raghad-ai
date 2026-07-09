@@ -15,19 +15,20 @@
   },
   "settings": {
     "title": "Settings",
-    "subtitle": "Region, currency & language",
+    "subtitle": "Language",
     "region": "Country / Region",
-    "currency": "Currency",
     "language": "Language"
   },
   "hero": {
     "title": "Smart answers tailored to your region",
     "subtitle": "Your smart guide for an exceptional experience in fashion, beauty, travel, and luxury living.",
     "searchPlaceholder": "Search for your recommendations...",
+    "searchButton": "Search",
     "cta": "Start chatting",
     "payment": "Affiliate deals",
     "voice": "Voice search",
-    "camera": "Visual search"
+    "camera": "Photo search",
+    "file": "Upload image"
   },
   "cards": {
     "title": "Our Categories",
@@ -40,7 +41,9 @@
     "send": "Send",
     "exportPdf": "Export PDF",
     "visitLink": "Visit link",
-    "browseCategories": "Browse our categories:"
+    "browseCategories": "Browse our categories:",
+    "voiceUnsupported": "Voice input isn't supported in this browser. Please try Chrome, Edge, or Safari.",
+    "imageAttached": "Image attached — ask a question or send to analyse it."
   },
   "dashboard": {
     "title": "Dashboard",
@@ -111,5 +114,31 @@
     "sending": "Sending...",
     "success": "Thank you! We received your message and will reply soon.",
     "error": "Could not send your message. Please try again."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about Raghad AI",
+    "items": [
+      {
+        "q": "What is Raghad AI?",
+        "a": "Raghad AI is your intelligent luxury lifestyle advisor for the Gulf region. It gives personalized recommendations across fashion, beauty, skincare, home, kids' essentials, and smart travel planning."
+      },
+      {
+        "q": "How does the AI give recommendations?",
+        "a": "It combines a curated knowledge base with advanced AI to answer your questions directly in chat — including product advice, skincare routines, and full travel itineraries tailored to your region."
+      },
+      {
+        "q": "Can I search using my voice or a photo?",
+        "a": "Yes. Use the microphone to search by voice, or the camera and upload icons to search with an image. The assistant analyses your photo and suggests suitable options."
+      },
+      {
+        "q": "Which regions and languages are supported?",
+        "a": "Raghad AI supports Arabic and English, and automatically adapts to Saudi Arabia, the Gulf (GCC), and Egypt based on your location."
+      },
+      {
+        "q": "Are the shopping links trustworthy?",
+        "a": "Recommendations appear as clean product cards with trusted store links and discount codes from our verified affiliate partners — no raw links, ever."
+      }
+    ]
   }
 }

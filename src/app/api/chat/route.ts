@@ -3,16 +3,19 @@ import { expandQueryForRetrieval } from "@/lib/rag/dialect";
 import { getActiveIndexedChunks, isRagIndexReady } from "@/lib/rag/store";
 import {
   generateAnswer,
+  generateVisionAnswer,
   isOpenAIConfigured,
   retrieveChunks,
 } from "@/lib/rag/openai-rag";
+import type { IndexedChunk } from "@/lib/rag/openai-rag";
 import { getProductsForChat } from "@/lib/products/store";
 import { toChatProduct } from "@/lib/products/types";
 import {
   getCategoryFallbackMessage,
-  shouldSuggestCategories,
   stripRawUrls,
 } from "@/lib/chat/fallback";
+
+export const maxDuration = 60;
 
 export async function POST(request: Request) {
   try {
@@ -20,44 +23,38 @@ export async function POST(request: Request) {
     const query = String(body.query ?? "").trim();
     const locale = body.locale === "ar" ? "ar" : "en";
     const category = body.category ? String(body.category) : undefined;
+    const image = typeof body.image === "string" && body.image.startsWith("data:image")
+      ? body.image
+      : undefined;
 
-    if (!query) {
+    if (!query && !image) {
       return NextResponse.json({ error: "Query is required" }, { status: 400 });
     }
 
+    // Without an API key we cannot generate answers — guide to categories.
     if (!isOpenAIConfigured()) {
-      const answer = getCategoryFallbackMessage(locale);
       return NextResponse.json({
-        answer,
+        answer: getCategoryFallbackMessage(locale),
         suggestCategories: true,
         stub: true,
       });
     }
 
-    if (!(await isRagIndexReady())) {
-      const answer = getCategoryFallbackMessage(locale);
-      return NextResponse.json({
-        answer,
-        suggestCategories: true,
-        stub: true,
-      });
+    // Retrieve knowledge-base context when the index is ready; otherwise the
+    // advisor still answers directly from its own expertise.
+    let retrieved: IndexedChunk[] = [];
+    if (await isRagIndexReady()) {
+      const chunks = await getActiveIndexedChunks();
+      if (chunks.length > 0) {
+        const expanded = expandQueryForRetrieval(query || "");
+        retrieved = await retrieveChunks(chunks, query || "", expanded);
+      }
     }
 
-    const chunks = await getActiveIndexedChunks();
-    if (chunks.length === 0) {
-      const answer = getCategoryFallbackMessage(locale);
-      return NextResponse.json({
-        answer,
-        suggestCategories: true,
-        stub: true,
-      });
-    }
-
-    const expanded = expandQueryForRetrieval(query);
-    const retrieved = await retrieveChunks(chunks, query, expanded);
-    const rawAnswer = await generateAnswer(query, retrieved, locale, category);
+    const rawAnswer = image
+      ? await generateVisionAnswer(query, image, retrieved, locale, category)
+      : await generateAnswer(query, retrieved, locale, category);
     const answer = stripRawUrls(rawAnswer);
-    const suggestCategories = shouldSuggestCategories(answer);
 
     const dbProducts = await getProductsForChat(category);
     const products = dbProducts.map((p) => toChatProduct(p, locale));
@@ -65,7 +62,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       answer,
       products,
-      suggestCategories,
+      suggestCategories: false,
       sources: retrieved.map((c) => ({
         id: c.id,
         source: c.metadata.source,

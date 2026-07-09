@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BrandLogo } from "@/components/brand/BrandLogo";
+import { BrandLockup } from "@/components/brand/BrandLogo";
 import { useApp } from "@/components/providers/AppProviders";
 import { useAuth } from "@/components/providers/AuthProvider";
-import { SettingsMenu } from "@/components/layout/SettingsMenu";
+import { LanguageToggle } from "@/components/layout/LanguageToggle";
 import { MobileNav } from "@/components/layout/MobileNav";
 
 function NavLink({ href, label }: { href: string; label: string }) {
@@ -36,11 +36,8 @@ export function Header() {
       className="sticky top-0 z-50 border-b border-[#ddd0b8]/50 bg-[#faf6ef]/95 backdrop-blur"
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-        <Link href="/" className="flex items-center gap-2">
-          <BrandLogo size="sm" priority />
-          <span className="hidden font-serif text-lg tracking-wide text-[#2c3e35] sm:inline">
-            {messages.brand}
-          </span>
+        <Link href="/" className="flex items-center" aria-label={messages.brand}>
+          <BrandLockup height={44} priority />
         </Link>
 
         <nav className="hidden items-center gap-1 lg:flex">
@@ -64,12 +61,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          {user && (
-            <span className="hidden text-xs text-[#7a8b82] md:inline">
-              {user.name ?? user.email}
-            </span>
-          )}
-          <SettingsMenu className="hidden lg:block" />
+          <LanguageToggle />
           <MobileNav className="lg:hidden" />
         </div>
       </div>

@@ -18,15 +18,15 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <div className="mx-auto grid max-w-4xl gap-6 px-4 py-12">
-          <article className="luxury-card p-8">
+        <div className="mx-auto grid max-w-4xl gap-6 px-4 py-12 sm:px-6">
+          <article className="luxury-card p-8 sm:p-10">
             <h2 className="font-serif text-xl text-[#2c3e35]">{messages.about.visionTitle}</h2>
-            <p className="mt-4 text-sm leading-7 text-[#5c6b62]">{messages.about.visionBody}</p>
+            <p className="mt-4 text-sm leading-8 text-[#5c6b62]">{messages.about.visionBody}</p>
           </article>
 
-          <article className="luxury-card p-8">
+          <article className="luxury-card p-8 sm:p-10">
             <h2 className="font-serif text-xl text-[#2c3e35]">{messages.about.missionTitle}</h2>
-            <p className="mt-4 text-sm leading-7 text-[#5c6b62]">{messages.about.missionBody}</p>
+            <p className="mt-4 text-sm leading-8 text-[#5c6b62]">{messages.about.missionBody}</p>
           </article>
 
           <p className="text-center text-xs text-[#9a8560]">{messages.about.contentNote}</p>

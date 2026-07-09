@@ -77,30 +77,48 @@ body {
   border-radius: 0.75rem;
   border: 1px solid rgb(212 196 160 / 0.6);
   background: rgb(255 255 255 / 0.8);
-  padding: 0.625rem 0.875rem;
+  padding: 0.7rem 0.95rem;
   font-size: 0.875rem;
+  color: var(--luxury-text);
   outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .luxury-input:focus {
   border-color: var(--luxury-emerald);
+  box-shadow: 0 0 0 3px rgb(44 110 85 / 0.12);
+}
+
+/* Stronger placeholder contrast across all inputs */
+.luxury-input::placeholder,
+input::placeholder,
+textarea::placeholder {
+  color: #6f7d73;
+  opacity: 1;
 }
 
 .luxury-btn {
-  border-radius: 0.75rem;
+  border-radius: 0.85rem;
   background: linear-gradient(to bottom, var(--luxury-emerald), var(--luxury-emerald-dark));
-  padding: 0.625rem 1.25rem;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: white;
+  box-shadow: 0 4px 16px rgb(31 82 64 / 0.28);
+  transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
 }
 
 .luxury-btn:hover {
-  opacity: 0.92;
+  background: linear-gradient(to bottom, #337d61, #24614b);
+  box-shadow: 0 6px 22px rgb(31 82 64 / 0.36);
+  transform: translateY(-1px);
 }
 
 .luxury-btn:disabled {
   opacity: 0.5;
+  transform: none;
+  box-shadow: none;
 }
 
 .luxury-search-bar {
