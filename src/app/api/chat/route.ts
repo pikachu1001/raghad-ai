@@ -67,7 +67,7 @@ export async function POST(request: Request) {
       }
     }
 
-    const dbProducts = await getProductsForChat(category);
+    const dbProducts = await getProductsForChat({ query, category });
     const products = dbProducts.map((p) => toChatProduct(p, locale));
 
     return NextResponse.json({

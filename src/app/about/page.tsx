@@ -17,7 +17,7 @@ export default function AboutPage() {
         </section>
 
         <div className="mx-auto grid max-w-4xl gap-8 px-4 py-14 sm:gap-10 sm:px-6 sm:py-16">
-          <article className="luxury-card p-8 sm:p-10 lg:p-12">
+          <article id="vision" className="luxury-card scroll-mt-24 p-8 sm:p-10 lg:p-12">
             <h2 className="luxury-heading-section text-xl sm:text-2xl">
               {messages.about.visionTitle}
             </h2>
