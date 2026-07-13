@@ -15,12 +15,15 @@
   },
   "settings": {
     "title": "Settings",
-    "subtitle": "Language",
     "region": "Country / Region",
-    "language": "Language"
+    "currency": "Currency",
+    "language": "Language",
+    "open": "Open settings"
   },
   "hero": {
     "title": "Smart answers tailored to your region",
+    "taglineShort": "Your trusted smart guide",
+    "domain": "Askraghadai.com",
     "subtitle": "Your smart guide for an exceptional experience in fashion, beauty, travel, and luxury living.",
     "searchPlaceholder": "Search for your recommendations...",
     "searchButton": "Search",
@@ -44,6 +47,10 @@
     "welcome": "Welcome! I'm Raghad — your smart guide for fashion, beauty, skincare, and travel. Ask your question below and I'll help you find the best recommendations.",
     "send": "Send",
     "exportPdf": "Export PDF",
+    "exportingPdf": "Exporting...",
+    "pdfTitle": "Raghad AI — Conversation Summary",
+    "pdfUser": "User",
+    "pdfAssistant": "Assistant",
     "visitLink": "Visit link",
     "browseCategories": "Browse our categories:",
     "voiceUnsupported": "Voice input isn't supported in this browser. Please try Chrome, Edge, or Safari.",

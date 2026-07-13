@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { Locale } from "@/lib/i18n/types";
 
 type BrandLogoProps = {
   size?: "sm" | "md" | "lg";
@@ -30,26 +31,55 @@ export function BrandLogo({ size = "sm", className = "", priority = false }: Bra
   );
 }
 
-/** Horizontal lockup: monogram mark + "Raghad Al" wordmark. */
+const LOCKUP_ASSETS: Record<Locale, string> = {
+  ar: "/brand/lockup.png",
+  en: "/brand/raghad-web.png",
+};
+
+/** Horizontal lockup — locale-specific wordmark asset. */
 export function BrandLockup({
+  locale,
   height = 40,
   className = "",
   priority = false,
 }: {
+  locale: Locale;
   height?: number;
   className?: string;
   priority?: boolean;
 }) {
-  // Intrinsic asset ratio is 368 x 95.
+  const src = LOCKUP_ASSETS[locale];
   const width = Math.round((368 / 95) * height);
 
   return (
     <Image
-      src="/brand/raghad-web.png"
-      alt="Raghad AI"
+      src={src}
+      alt={locale === "ar" ? "رغد AI" : "Raghad AI"}
       width={width}
       height={height}
       className={`object-contain ${className}`}
+      priority={priority}
+    />
+  );
+}
+
+/** Hero centerpiece logo — larger mark for homepage. */
+export function BrandHeroLogo({
+  locale,
+  className = "",
+  priority = false,
+}: {
+  locale: Locale;
+  className?: string;
+  priority?: boolean;
+}) {
+  return (
+    <Image
+      src="/brand/logo-web.png"
+      alt={locale === "ar" ? "رغد AI" : "Raghad AI"}
+      width={416}
+      height={416}
+      className={`h-auto w-full object-contain ${className}`}
       priority={priority}
     />
   );

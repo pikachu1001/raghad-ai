@@ -2,10 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BrandLockup } from "@/components/brand/BrandLogo";
+import { BrandLockup, BrandLogo } from "@/components/brand/BrandLogo";
 import { useApp } from "@/components/providers/AppProviders";
 import { useAuth } from "@/components/providers/AuthProvider";
-import { LanguageToggle } from "@/components/layout/LanguageToggle";
+import { SettingsMenu } from "@/components/layout/SettingsMenu";
 import { MobileNav } from "@/components/layout/MobileNav";
 
 function NavLink({ href, label }: { href: string; label: string }) {
@@ -15,10 +15,10 @@ function NavLink({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className={`rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+      className={`rounded-lg px-3 py-2 text-base font-medium transition-colors ${
         active
           ? "bg-[#c9a962]/20 text-[#1f5240]"
-          : "text-[#5c6b62] hover:bg-[#f3ece0] hover:text-[#2c3e35]"
+          : "text-[#4f5f56] hover:bg-[#f3ece0] hover:text-[#24332c]"
       }`}
     >
       {label}
@@ -27,7 +27,7 @@ function NavLink({ href, label }: { href: string; label: string }) {
 }
 
 export function Header() {
-  const { messages, dir } = useApp();
+  const { messages, dir, locale } = useApp();
   const { user, logout } = useAuth();
   const pathname = usePathname();
 
@@ -56,7 +56,8 @@ export function Header() {
             </Link>
           )}
           <Link href="/" className="flex items-center" aria-label={messages.brand}>
-            <BrandLockup height={44} priority />
+            <BrandLogo size="sm" className="md:hidden" priority />
+            <BrandLockup locale={locale} height={44} className="hidden md:block" priority />
           </Link>
         </div>
 
@@ -71,7 +72,7 @@ export function Header() {
             <button
               type="button"
               onClick={() => logout()}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-[#5c6b62] hover:bg-[#f3ece0]"
+              className="rounded-lg px-3 py-2 text-base font-medium text-[#4f5f56] hover:bg-[#f3ece0]"
             >
               {messages.nav.logout}
             </button>
@@ -81,7 +82,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <LanguageToggle />
+          <SettingsMenu className="hidden lg:flex" />
           <MobileNav className="lg:hidden" />
         </div>
       </div>

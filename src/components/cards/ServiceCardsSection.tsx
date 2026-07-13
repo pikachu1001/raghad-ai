@@ -28,7 +28,7 @@ export const CATEGORY_ITEMS: ProductCardItem[] = [
     titleEn: "Skincare",
     titleAr: "العناية بالبشرة",
     descriptionEn: "Personalized skincare advice tailored to Gulf climate.",
-    descriptionAr: "نصائح عناية بالبشرة مخصصة لمناخ الخليج.",
+    descriptionAr: "نصائح عناية بالبشرة مناسبة لمناخ الخليج.",
     price: 0,
     href: "/chat?category=skincare",
   },
@@ -46,7 +46,7 @@ export const CATEGORY_ITEMS: ProductCardItem[] = [
     titleEn: "Kids & Baby Essentials",
     titleAr: "مستلزمات الأطفال والرضع",
     descriptionEn: "Trusted product guidance for mothers across the Gulf.",
-    descriptionAr: "إرشاد موثوق للمنتجات للأمهات في الخليج.",
+    descriptionAr: "إرشاد موثوق للمنتجات للعائلات في منطقة الخليج.",
     price: 0,
     href: "/chat?category=kids",
   },
@@ -62,19 +62,20 @@ export const CATEGORY_ITEMS: ProductCardItem[] = [
 ];
 
 export function ServiceCardsSection() {
-  const { messages, locale } = useApp();
+  const { messages, locale, dir } = useApp();
 
   return (
     <section
+      dir={dir}
       className={`mx-auto max-w-6xl px-4 pb-8 ${
         locale === "ar" ? "pt-8 sm:pt-10 md:pt-4" : "pt-6 sm:pt-8 md:pt-4"
       }`}
     >
-      <div className="mb-6 text-center">
-        <h2 className="font-serif text-2xl tracking-wide text-[#2c3e35]">{messages.cards.title}</h2>
-        <p className="mt-2 text-sm text-[#7a8b82]">{messages.cards.subtitle}</p>
+      <div className="mb-8 text-center sm:mb-10">
+        <h2 className="luxury-heading-section text-2xl sm:text-3xl">{messages.cards.title}</h2>
+        <p className="luxury-muted mt-3">{messages.cards.subtitle}</p>
       </div>
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {CATEGORY_ITEMS.map((item) => (
           <ProductCard key={item.id} item={item} />
         ))}

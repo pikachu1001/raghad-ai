@@ -19,9 +19,9 @@ export function ChatProductCard({ product }: { product: ChatProduct }) {
         />
       </div>
       <div className="p-4">
-        <h3 className="font-semibold text-[#2c3e35]">{product.name}</h3>
+        <h3 className="text-base font-semibold text-[#24332c]">{product.name}</h3>
         {product.description && (
-          <p className="mt-1 line-clamp-2 text-xs leading-5 text-[#7a8b82]">{product.description}</p>
+          <p className="luxury-muted mt-1.5 line-clamp-2 text-sm leading-6">{product.description}</p>
         )}
         <div className="mt-3 flex flex-wrap items-center gap-2">
           {product.price != null && (
@@ -40,7 +40,7 @@ export function ChatProductCard({ product }: { product: ChatProduct }) {
             href={product.affiliateUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 inline-flex rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-4 py-1.5 text-xs font-medium text-white hover:opacity-90"
+            className="mt-3 inline-flex rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
           >
             {messages.products.shopNow}
           </a>

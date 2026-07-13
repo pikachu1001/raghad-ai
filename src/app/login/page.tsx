@@ -15,7 +15,7 @@ async function parseJsonResponse(res: Response) {
 }
 
 function LoginForm() {
-  const { messages } = useApp();
+  const { messages, dir } = useApp();
   const { refresh, user, loading: authLoading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -64,7 +64,7 @@ function LoginForm() {
   if (authLoading) {
     return (
       <AppShell>
-        <div className="luxury-page flex min-h-[40vh] items-center justify-center text-sm text-[#7a8b82]">
+        <div className="luxury-page flex min-h-[40vh] items-center justify-center luxury-muted">
           {messages.dashboard.loading}
         </div>
       </AppShell>
@@ -73,34 +73,36 @@ function LoginForm() {
 
   return (
     <AppShell>
-      <div className="luxury-page mx-auto max-w-md px-4 py-12">
-        <h1 className="font-serif text-2xl tracking-wide text-[#2c3e35]">
+      <div className="luxury-page mx-auto max-w-md px-4 py-12 sm:py-14" dir={dir}>
+        <h1 className="luxury-heading-page">
           {mode === "login" ? messages.auth.loginTitle : messages.auth.registerTitle}
         </h1>
 
-        <form onSubmit={submit} className="luxury-card mt-6 space-y-4 p-6">
+        <form onSubmit={submit} className="luxury-card mt-8 space-y-5 p-6 sm:p-8">
           {mode === "register" && (
             <div>
-              <label className="mb-1 block text-sm text-[#7a8b82]">{messages.auth.name}</label>
+              <label className="luxury-label">{messages.auth.name}</label>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="luxury-input"
+                dir={dir}
               />
             </div>
           )}
           <div>
-            <label className="mb-1 block text-sm text-[#7a8b82]">{messages.auth.email}</label>
+            <label className="luxury-label">{messages.auth.email}</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="luxury-input"
+              dir="ltr"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-[#7a8b82]">{messages.auth.password}</label>
+            <label className="luxury-label">{messages.auth.password}</label>
             <input
               type="password"
               required
@@ -108,6 +110,7 @@ function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="luxury-input"
+              dir="ltr"
             />
           </div>
 
@@ -144,7 +147,7 @@ export default function LoginPage() {
     <Suspense
       fallback={
         <AppShell>
-          <div className="luxury-page flex min-h-[40vh] items-center justify-center text-sm text-[#7a8b82]">
+          <div className="luxury-page flex min-h-[40vh] items-center justify-center luxury-muted">
             {messages.dashboard.loading}
           </div>
         </AppShell>

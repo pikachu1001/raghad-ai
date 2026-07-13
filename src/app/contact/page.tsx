@@ -41,39 +41,40 @@ export default function ContactPage() {
 
   return (
     <AppShell>
-      <div className="luxury-page mx-auto max-w-2xl px-4 py-12" dir={dir}>
-        <h1 className="text-center font-serif text-3xl tracking-wide text-[#2c3e35]">
-          {messages.contact.title}
-        </h1>
-        <p className="mt-3 text-center text-sm text-[#7a8b82]">{messages.contact.subtitle}</p>
+      <div className="luxury-page mx-auto max-w-2xl px-4 py-12 sm:py-14" dir={dir}>
+        <h1 className="luxury-heading-page text-center">{messages.contact.title}</h1>
+        <p className="luxury-muted mt-4 text-center">{messages.contact.subtitle}</p>
 
-        <form onSubmit={submit} className="luxury-card mt-8 space-y-4 p-8">
+        <form onSubmit={submit} className="luxury-card mt-10 space-y-5 p-8 sm:p-10">
           <div>
-            <label className="mb-1 block text-sm text-[#7a8b82]">{messages.contact.name}</label>
+            <label className="luxury-label">{messages.contact.name}</label>
             <input
               className="luxury-input"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
+              dir={dir}
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-[#7a8b82]">{messages.contact.email}</label>
+            <label className="luxury-label">{messages.contact.email}</label>
             <input
               type="email"
               className="luxury-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              dir="ltr"
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm text-[#7a8b82]">{messages.contact.message}</label>
+            <label className="luxury-label">{messages.contact.message}</label>
             <textarea
               className="luxury-input min-h-[140px]"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               required
+              dir={dir}
             />
           </div>
 

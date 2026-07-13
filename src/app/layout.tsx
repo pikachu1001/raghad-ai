@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { Noto_Sans_Arabic, Inter, Cormorant_Garamond } from "next/font/google";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { AuthProvider } from "@/components/providers/AuthProvider";
@@ -6,6 +7,7 @@ import {
   IMPACT_VERIFICATION_ID,
   IMPACT_VERIFICATION_TEXT,
 } from "@/lib/affiliate-verification";
+import { LOCALE_COOKIE, dirFromLocale, parseLocale } from "@/lib/i18n/locale";
 import "./globals.css";
 
 const inter = Inter({
@@ -30,13 +32,17 @@ export const metadata: Metadata = {
     "Your AI-powered companion for fashion, beauty, skincare, home, kids, and travel across the Gulf.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const locale = parseLocale(cookieStore.get(LOCALE_COOKIE)?.value);
+  const dir = dirFromLocale(locale);
+
   return (
-    <html lang="ar" dir="rtl" className="h-full" suppressHydrationWarning>
+    <html lang={locale} dir={dir} className="h-full" suppressHydrationWarning>
       <head>
         {/* Impact expects value= in their snippet; include both value and content for crawlers */}
         <meta name="impact-site-verification" content={IMPACT_VERIFICATION_ID} />
@@ -49,7 +55,7 @@ export default function RootLayout({
       >
         {/* Server-rendered for Impact crawler (screen-reader only) */}
         <p className="sr-only-crawler">{IMPACT_VERIFICATION_TEXT}</p>
-        <AppProviders>
+        <AppProviders initialLocale={locale}>
           <AuthProvider>{children}</AuthProvider>
         </AppProviders>
       </body>

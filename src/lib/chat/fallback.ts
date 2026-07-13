@@ -1,5 +1,6 @@
 import { CATEGORIES } from "@/lib/categories";
-import { normalizeAnswerText } from "@/lib/text/normalize";
+import { normalizeAnswerText, fixRtlPunctuation } from "@/lib/text/normalize";
+import type { Locale } from "@/lib/i18n/types";
 
 export function getCategoryFallbackMessage(locale: "en" | "ar"): string {
   const list = CATEGORIES.map((c, i) => {
@@ -8,7 +9,7 @@ export function getCategoryFallbackMessage(locale: "en" | "ar"): string {
   }).join("\n");
 
   if (locale === "ar") {
-    return `شكراً لسؤالكِ — يسعدني مساعدتكِ.\n\nلم أجد تفاصيل كافية عن هذا الطلب في قاعدة معرفتنا حالياً، لكن يمكنني تقديم توصيات موثوقة ضمن الأقسام التالية:\n\n${list}\n\nاخترِي القسم الأنسب من الصفحة الرئيسية، أو اكتبي سؤالكِ ضمن أحد هذه المجالات وسأقدّم لكِ أفضل الخيارات بعناية.`;
+    return `شكراً لسؤالك — يسعدني مساعدتك.\n\nلم أجد تفاصيل كافية عن هذا الطلب في قاعدة معرفتنا حالياً، لكن يمكنني تقديم توصيات موثوقة ضمن الأقسام التالية:\n\n${list}\n\nاختر القسم الأنسب من الصفحة الرئيسية، أو اكتب سؤالك ضمن أحد هذه المجالات وسأقدّم لك أفضل الخيارات بعناية.`;
   }
 
   return `Thank you for your question — I'm happy to help.\n\nI don't have enough detail on that topic in our knowledge base yet, but I can offer trusted recommendations across these categories:\n\n${list}\n\nBrowse the most relevant section from our homepage, or ask your question within one of these areas and I'll guide you to the best options.`;
@@ -29,7 +30,9 @@ const FALLBACK_PATTERNS = [
   /لم أجد تفاصيل/i,
   /don't have enough detail/i,
   /يسعدني مساعدتك/i,
+  /يسعدني مساعدتكِ/i,
   /happy to help/i,
+  /اختر القسم/i,
   /اخترِي القسم/i,
   /browse the most relevant/i,
 ];
@@ -38,12 +41,13 @@ export function shouldSuggestCategories(answer: string): boolean {
   return FALLBACK_PATTERNS.some((p) => p.test(answer));
 }
 
-export function stripRawUrls(text: string): string {
-  return normalizeAnswerText(
-    text
-      .replace(/\[([^\]]+)\]\(https?:\/\/[^)]+\)/g, "$1")
-      .replace(/https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi, "")
-      .replace(/\n{3,}/g, "\n\n")
-      .trim()
-  );
+export function stripRawUrls(text: string, locale: Locale = "en"): string {
+  const cleaned = text
+    .replace(/\[([^\]]+)\]\(https?:\/\/[^)]+\)/g, "$1")
+    .replace(/https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+
+  const normalized = normalizeAnswerText(cleaned);
+  return locale === "ar" ? fixRtlPunctuation(normalized) : normalized;
 }

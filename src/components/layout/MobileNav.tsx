@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { useApp } from "@/components/providers/AppProviders";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { BrandLogo } from "@/components/brand/BrandLogo";
-import type { Locale } from "@/lib/i18n/types";
+import { SettingsPanel } from "@/components/layout/SettingsPanel";
 
 type NavItem = { href: string; label: string; show?: boolean };
 
@@ -15,7 +15,7 @@ export function MobileNav({ className = "" }: { className?: string }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
-  const { messages, locale, setLocale, dir } = useApp();
+  const { messages, dir } = useApp();
   const { user, logout } = useAuth();
 
   const items: NavItem[] = [
@@ -65,7 +65,7 @@ export function MobileNav({ className = "" }: { className?: string }) {
           <div className="flex items-center justify-between gap-3 border-b border-[#ddd0b8]/50 px-6 py-5">
             <div className="flex items-center gap-2.5">
               <BrandLogo size="sm" />
-              <span className="font-serif text-lg tracking-wide text-[#2c3e35]">
+              <span className="luxury-heading-section text-lg">
                 {messages.brand}
               </span>
             </div>
@@ -88,10 +88,10 @@ export function MobileNav({ className = "" }: { className?: string }) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`block rounded-xl px-4 py-3 font-serif text-[0.95rem] tracking-wide transition ${
+                  className={`block rounded-xl px-4 py-3.5 text-base font-medium tracking-wide transition ${
                     pathname === item.href
-                      ? "bg-[#2c6e55]/12 text-[#1f5240]"
-                      : "text-[#4a5c52] hover:bg-[#f3ece0] hover:text-[#2c3e35]"
+                      ? "bg-[#2c6e55]/12 font-semibold text-[#1f5240]"
+                      : "text-[#4f5f56] hover:bg-[#f3ece0] hover:text-[#24332c]"
                   }`}
                 >
                   {item.label}
@@ -102,14 +102,14 @@ export function MobileNav({ className = "" }: { className?: string }) {
               <button
                 type="button"
                 onClick={() => logout()}
-                className="mt-1 block w-full rounded-xl px-4 py-3 text-start font-serif text-[0.95rem] tracking-wide text-[#4a5c52] transition hover:bg-[#f3ece0]"
+                className="mt-1 block w-full rounded-xl px-4 py-3.5 text-start text-base font-medium text-[#4f5f56] transition hover:bg-[#f3ece0]"
               >
                 {messages.nav.logout}
               </button>
             ) : (
               <Link
                 href="/login"
-                className="mt-1 block rounded-xl px-4 py-3 font-serif text-[0.95rem] tracking-wide text-[#4a5c52] transition hover:bg-[#f3ece0]"
+                className="mt-1 block rounded-xl px-4 py-3.5 text-start text-base font-medium text-[#4f5f56] transition hover:bg-[#f3ece0]"
               >
                 {messages.nav.login}
               </Link>
@@ -117,25 +117,10 @@ export function MobileNav({ className = "" }: { className?: string }) {
           </nav>
 
           <div className="border-t border-[#ddd0b8]/50 px-6 py-5">
-            <p className="mb-3 text-xs font-medium uppercase tracking-[0.15em] text-[#9a8560]">
-              {messages.settings.language}
-            </p>
-            <div className="flex gap-2">
-              {(["ar", "en"] as Locale[]).map((loc) => (
-                <button
-                  key={loc}
-                  type="button"
-                  onClick={() => setLocale(loc)}
-                  className={`flex-1 rounded-xl border px-3 py-2.5 text-sm font-medium transition ${
-                    locale === loc
-                      ? "border-[#2c6e55] bg-[#2c6e55]/10 text-[#1f5240]"
-                      : "border-[#ddd0b8]/70 bg-white/60 text-[#5c6b62] hover:border-[#c9a962]"
-                  }`}
-                >
-                  {loc === "ar" ? "العربية" : "English"}
-                </button>
-              ))}
-            </div>
+            <h2 className="luxury-heading-section mb-4 text-lg">
+              {messages.settings.title}
+            </h2>
+            <SettingsPanel />
           </div>
         </aside>
       </>,

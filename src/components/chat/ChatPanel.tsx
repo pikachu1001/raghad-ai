@@ -2,13 +2,13 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { jsPDF } from "jspdf";
 import { useApp } from "@/components/providers/AppProviders";
 import { ChatProductCard } from "@/components/chat/ChatProductCard";
 import {
   CategorySuggestions,
   ChatMessageContent,
 } from "@/components/chat/ChatMessageContent";
+import { exportChatToPdf } from "@/lib/pdf/export-chat";
 import type { ChatProduct } from "@/lib/products/types";
 
 type ChatMessage = {
@@ -50,6 +50,7 @@ export function ChatPanel() {
   const [listening, setListening] = useState(false);
   const [history, setHistory] = useState<ChatMessage[]>([]);
   const [category, setCategory] = useState<string | undefined>();
+  const [exportingPdf, setExportingPdf] = useState(false);
 
   const cameraInputRef = useRef<HTMLInputElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -173,53 +174,63 @@ export function ChatPanel() {
     }
   };
 
-  const exportPdf = () => {
-    const doc = new jsPDF();
-    doc.setFontSize(14);
-    doc.text("Raghad AI — Conversation Summary", 14, 20);
-    doc.setFontSize(10);
-    let y = 32;
-    for (const msg of history) {
-      const prefix = msg.role === "user" ? "User: " : "AI: ";
-      const lines = doc.splitTextToSize(prefix + msg.content, 180);
-      doc.text(lines, 14, y);
-      y += lines.length * 6 + 4;
-      if (y > 270) {
-        doc.addPage();
-        y = 20;
-      }
+  const exportPdf = async () => {
+    if (exportingPdf || history.length === 0) return;
+    setExportingPdf(true);
+    try {
+      await exportChatToPdf({
+        history: history.map((msg) => ({ role: msg.role, content: msg.content })),
+        locale,
+        labels: {
+          title: messages.chat.pdfTitle,
+          user: messages.chat.pdfUser,
+          assistant: messages.chat.pdfAssistant,
+        },
+      });
+    } catch (error) {
+      console.error("[chat] PDF export failed", error);
+      alert(
+        locale === "ar"
+          ? "تعذر تصدير PDF. يرجى المحاولة مرة أخرى."
+          : "Could not export PDF. Please try again."
+      );
+    } finally {
+      setExportingPdf(false);
     }
-    doc.save("raghad-ai-chat.pdf");
   };
 
   return (
     <div className="luxury-page mx-auto flex max-w-3xl flex-col gap-4 px-4 py-8 pb-[max(2rem,env(safe-area-inset-bottom))]" dir={dir}>
       <div className="flex items-center justify-between gap-3">
-        <h1 className="font-serif text-2xl tracking-wide text-[#2c3e35]">{messages.chat.title}</h1>
+        <h1 className="luxury-heading-section text-2xl sm:text-3xl">{messages.chat.title}</h1>
         {history.length > 0 && (
           <button
             type="button"
-            onClick={exportPdf}
-            className="luxury-card shrink-0 px-3 py-1.5 text-sm text-[#5c6b62] transition hover:bg-white"
+            onClick={() => void exportPdf()}
+            disabled={exportingPdf}
+            className="luxury-card luxury-muted shrink-0 px-3 py-2 text-base transition hover:bg-white disabled:opacity-60"
           >
-            {messages.chat.exportPdf}
+            {exportingPdf ? messages.chat.exportingPdf : messages.chat.exportPdf}
           </button>
         )}
       </div>
 
-      <div className="min-h-[360px] luxury-card p-4">
+      <div className="min-h-[360px] luxury-card p-5 sm:p-6">
         {history.length === 0 ? (
-          <p className="text-center text-sm leading-7 text-[#5c6b62]">{messages.chat.welcome}</p>
+          <p className="chat-message-body luxury-muted text-center leading-8" dir={dir}>
+            {messages.chat.welcome}
+          </p>
         ) : (
           <div className="space-y-4">
             {history.map((msg, i) => (
               <div key={i}>
                 <div
-                  className={`chat-bubble-${msg.role} rounded-xl px-4 py-3 text-sm ${
+                  className={`chat-bubble-${msg.role} chat-message-body rounded-xl px-4 py-3.5 text-base leading-relaxed ${
                     msg.role === "user"
-                      ? "bg-[#2c6e55]/10 text-[#1f5240]"
-                      : "bg-white text-[#2c3e35]"
+                      ? "bg-[#2c6e55]/10 font-medium text-[#1f5240]"
+                      : "bg-white font-medium text-[#24332c]"
                   }`}
+                  dir={dir}
                 >
                   {msg.image && (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -234,8 +245,8 @@ export function ChatPanel() {
                   ) : (
                     <ChatMessageContent
                       content={msg.content}
-                      locale={locale}
                       linkLabel={messages.chat.visitLink}
+                      dir={dir}
                     />
                   )}
                 </div>
@@ -342,12 +353,12 @@ export function ChatPanel() {
             placeholder={inputPlaceholder}
             dir={dir}
             aria-label={messages.chat.title}
-            className="min-w-0 flex-1 bg-transparent text-sm text-[#3d4f45] outline-none placeholder:text-[#7d7358]"
+            className="min-w-0 flex-1 bg-transparent text-base text-[#3d4f45] outline-none placeholder:text-[#5f6d63]"
           />
           <button
             type="submit"
             disabled={loading}
-            className="shrink-0 rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_2px_10px_rgba(31,82,64,0.4)] transition hover:from-[#337d61] hover:to-[#24614b] disabled:opacity-50"
+            className="shrink-0 rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-5 py-2.5 text-base font-semibold text-white shadow-[0_2px_10px_rgba(31,82,64,0.4)] transition hover:from-[#337d61] hover:to-[#24614b] disabled:opacity-50"
           >
             {loading ? "..." : messages.chat.send}
           </button>

@@ -14,7 +14,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         aria-expanded={open}
         className="flex w-full items-center justify-between gap-4 px-5 py-4 text-start"
       >
-        <span className="font-serif text-[0.98rem] tracking-wide text-[#2c3e35]">{q}</span>
+        <span className="font-serif text-base font-semibold tracking-wide text-[#24332c] sm:text-[1.02rem]">{q}</span>
         <svg
           className={`h-5 w-5 shrink-0 text-[#c9a962] transition-transform duration-300 ${open ? "rotate-180" : ""}`}
           fill="none"
@@ -30,7 +30,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
         }`}
       >
         <div className="overflow-hidden">
-          <p className="px-5 pb-5 text-sm leading-7 text-[#5c6b62]">{a}</p>
+          <p className="luxury-body px-5 pb-5">{a}</p>
         </div>
       </div>
     </div>
@@ -41,12 +41,12 @@ export function FaqSection() {
   const { messages, dir } = useApp();
 
   return (
-    <section id="faq" className="mx-auto max-w-3xl px-4 py-12" dir={dir}>
-      <div className="mb-7 text-center">
-        <h2 className="font-serif text-2xl tracking-wide text-[#2c3e35]">{messages.faq.title}</h2>
-        <p className="mt-2 text-sm text-[#7a8b82]">{messages.faq.subtitle}</p>
+    <section id="faq" className="luxury-section mx-auto max-w-3xl px-4 sm:px-6" dir={dir}>
+      <div className="mb-8 text-center sm:mb-10">
+        <h2 className="luxury-heading-section text-2xl sm:text-3xl">{messages.faq.title}</h2>
+        <p className="luxury-muted mt-3">{messages.faq.subtitle}</p>
       </div>
-      <div className="space-y-3">
+      <div className="space-y-4">
         {messages.faq.items.map((item, i) => (
           <FaqItem key={i} q={item.q} a={item.a} />
         ))}

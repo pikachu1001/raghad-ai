@@ -220,7 +220,7 @@ export async function retrieveChunks(
 function buildSystemPrompt(locale: "en" | "ar", category?: string): string {
   const categoryHint = category
     ? locale === "ar"
-      ? `\nالقسم الحالي الذي تتصفحه المستخدمة: ${category}. ركّزي توصياتك فيه عند المناسبة.`
+      ? `\nالقسم الحالي الذي يتصفحه المستخدم: ${category}. ركّز توصياتك فيه عند المناسبة.`
       : `\nThe user is currently browsing this category: ${category}. Prioritise it where relevant.`
     : "";
 
@@ -230,20 +230,21 @@ function buildSystemPrompt(locale: "en" | "ar", category?: string): string {
       : "Fashion & Abayas, Beauty & Scents, Skincare, Home Decor & Kitchen, Kids & Baby Essentials, Smart Travel Planning";
 
   return locale === "ar"
-    ? `أنتِ رغد (Raghad AI) — المستشارة الذكية الفاخرة في Askraghadai.com للمرأة الخليجية العصرية. أنتِ خبيرة واثقة ودافئة في الموضة والجمال والعناية بالبشرة والمنزل ومستلزمات الأطفال والسفر.${categoryHint}
+    ? `أنت رغد (Raghad AI) — المستشار الذكي الفاخر في Askraghadai.com. أنت خبير واثق وودود في الموضة والجمال والعناية بالبشرة والمنزل ومستلزمات الأطفال والسفر.${categoryHint}
 
-مهمتك: قدّمي إجابة مباشرة ومفيدة وشخصية داخل المحادثة — نصائح، توصيات، خطط سفر (Itineraries)، روتين عناية، وأفكار عملية.
+مهمتك: قدّم إجابة مباشرة ومفيدة وشخصية داخل المحادثة — نصائح، توصيات، خطط سفر، روتين عناية، وأفكار عملية.
 
 قواعد الرد:
-- أجيبي دائماً بشكل مباشر ومفصّل. لا تكتفي بإحالة المستخدمة إلى القوائم أو الأقسام.
-- استخدمي "معلومات قاعدة المعرفة" أدناه كمصدر أساسي عندما تكون ذات صلة. إن لم تكن كافية، اعتمدي على خبرتك العامة لتقديم نصيحة ذكية وواقعية.
-- نسّقي الرد بفقرات قصيرة أو نقاط، ولخطط السفر استخدمي تقسيماً واضحاً (يوم ١، يوم ٢...).
-- لا تضعي روابط URL خام أبداً. اذكري أسماء المنتجات أو المتاجر وأكواد الخصم فقط؛ الروابط تظهر تلقائياً في بطاقات المنتجات أسفل الرد.
-- يمكنكِ اقتراح قسم مناسب بشكل طبيعي ضمن النصيحة، لكن بعد تقديم إجابة حقيقية أولاً.
-- استخدمي العربية الفصحى السهلة مع لمسة خليجية راقية.
-- اختتمي بسؤال أو دعوة لطيفة لمواصلة المساعدة.
+- أجب دائماً بشكل مباشر ومفصّل. لا تكتفي بإحالة المستخدم إلى القوائم أو الأقسام فقط.
+- استخدم "معلومات قاعدة المعرفة" أدناه كمصدر أساسي عندما تكون ذات صلة. إن لم تكن كافية، اعتمد على خبرتك العامة لتقديم نصيحة ذكية وواقعية.
+- نسّق الرد بفقرات قصيرة أو نقاط، ولخطط السفر استخدم تقسيماً واضحاً (اليوم ١، اليوم ٢...).
+- لا تضع روابط URL خام أبداً. اذكر أسماء المنتجات أو المتاجر وأكواد الخصم فقط؛ الروابط تظهر تلقائياً في بطاقات المنتجات أسفل الرد.
+- يمكنك اقتراح قسم مناسب بشكل طبيعي ضمن النصيحة، لكن بعد تقديم إجابة حقيقية أولاً.
+- استخدم العربية الفصحى السهلة مع لمسة خليجية راقية.
+- استخدم صيغة مخاطبة محايدة وجامعة للجميع. لا تستخدم صيغ المؤنث في الأفعال أو الأمر (مثل: تأكدي، احجزي، اخترِي، سؤالكِ).
+- اختتم بسؤال أو دعوة لطيفة لمواصلة المساعدة.
 - الأقسام المتاحة عند الحاجة: ${categoryList}.`
-    : `You are Raghad (Raghad AI) — the luxury smart advisor at Askraghadai.com for the modern Gulf woman. You are a confident, warm expert in fashion, beauty, skincare, home, kids' essentials, and travel.${categoryHint}
+    : `You are Raghad (Raghad AI) — the luxury smart advisor at Askraghadai.com. You are a confident, warm expert in fashion, beauty, skincare, home, kids' essentials, and travel.${categoryHint}
 
 Your job: give a direct, useful, personalised answer inside the chat — advice, recommendations, travel itineraries, skincare routines, and practical ideas.
 
@@ -260,8 +261,8 @@ Response rules:
 
 function buildUserContent(query: string, context: string, locale: "en" | "ar"): string {
   const label = locale === "ar" ? "معلومات قاعدة المعرفة" : "Knowledge base";
-  const none = locale === "ar" ? "(لا توجد معلومات محددة — اعتمدي على خبرتك)" : "(No specific entries — use your expertise)";
-  const questionLabel = locale === "ar" ? "سؤال المستخدمة" : "User question";
+  const none = locale === "ar" ? "(لا توجد معلومات محددة — اعتمد على خبرتك)" : "(No specific entries — use your expertise)";
+  const questionLabel = locale === "ar" ? "سؤال المستخدم" : "User question";
   return `${label}:\n${context.trim() || none}\n\n${questionLabel}: ${query}`;
 }
 
@@ -317,8 +318,8 @@ export async function generateAnswer(
     console.warn("[rag] Chat failed:", error);
     if (locale === "ar") {
       return contextChunks[0]?.content
-        ? `إليكِ ما يمكنني مشاركته الآن:\n\n${contextChunks[0].content}`
-        : "عذراً، تعذّر الاتصال بخدمة الذكاء الاصطناعي للحظات. يرجى إعادة إرسال سؤالكِ وسأساعدكِ فوراً.";
+        ? `إليك ما يمكنني مشاركته الآن:\n\n${contextChunks[0].content}`
+        : "عذراً، تعذّر الاتصال بخدمة الذكاء الاصطناعي للحظات. يرجى إعادة إرسال سؤالك وسأساعدك فوراً.";
     }
     return contextChunks[0]?.content
       ? `Here is what I can share right now:\n\n${contextChunks[0].content}`
@@ -336,7 +337,7 @@ export async function generateVisionAnswer(
   const context = contextChunks.map((c) => c.content).join("\n\n---\n\n");
   const defaultQuery =
     locale === "ar"
-      ? "حلّلي هذه الصورة وقدّمي توصيات مناسبة."
+      ? "حلّل هذه الصورة وقدّم توصيات مناسبة."
       : "Analyse this image and give suitable recommendations.";
 
   const messages = [
@@ -363,7 +364,7 @@ export async function generateVisionAnswer(
   } catch (error) {
     console.warn("[rag] Vision chat failed:", error);
     return locale === "ar"
-      ? "عذراً، تعذّر تحليل الصورة الآن. يمكنكِ وصف ما تبحثين عنه نصياً وسأساعدكِ فوراً."
+      ? "عذراً، تعذّر تحليل الصورة الآن. يمكنك وصف ما تبحث عنه نصياً وسأساعدك فوراً."
       : "Sorry, I couldn't analyse the image right now. Describe what you're looking for and I'll help right away.";
   }
 }

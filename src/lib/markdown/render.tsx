@@ -13,7 +13,7 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
     }
     if (match[2]) {
       nodes.push(
-        <strong key={`${keyPrefix}-b-${i}`} className="font-semibold text-[#1f5240]">
+        <strong key={`${keyPrefix}-b-${i}`} className="font-bold text-[#1f5240]">
           {match[2]}
         </strong>,
       );
@@ -35,7 +35,13 @@ function renderInline(text: string, keyPrefix: string): ReactNode[] {
   return nodes.length > 0 ? nodes : [text];
 }
 
-export function MarkdownContent({ content }: { content: string }) {
+export function MarkdownContent({
+  content,
+  dir = "ltr",
+}: {
+  content: string;
+  dir?: "ltr" | "rtl";
+}) {
   const lines = content.split("\n");
   const blocks: ReactNode[] = [];
   let listItems: ReactNode[] = [];
@@ -88,5 +94,9 @@ export function MarkdownContent({ content }: { content: string }) {
   }
 
   flushList();
-  return <div className="space-y-0.5">{blocks}</div>;
+  return (
+    <div dir={dir} className="chat-message-body space-y-0.5">
+      {blocks}
+    </div>
+  );
 }

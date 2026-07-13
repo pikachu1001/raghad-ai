@@ -6,9 +6,17 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
+import { useRouter } from "next/navigation";
 import { getMessages } from "@/lib/i18n/get-messages";
+import {
+  LOCALE_STORAGE_KEY,
+  dirFromLocale,
+  isLocale,
+  setLocaleCookie,
+} from "@/lib/i18n/locale";
 import type { Locale, Messages, Region } from "@/lib/i18n/types";
 import { REGION_CONFIG } from "@/lib/region/config";
 import { REGION_KEY, REGION_MANUAL_KEY } from "@/lib/region/geo";
@@ -25,19 +33,54 @@ type AppContextValue = {
 
 const AppContext = createContext<AppContextValue | null>(null);
 
-const LOCALE_KEY = "raghad-locale";
+function applyDocumentDirection(locale: Locale) {
+  const dir = dirFromLocale(locale);
+  document.documentElement.lang = locale;
+  document.documentElement.dir = dir;
+}
 
-export function AppProviders({ children }: { children: React.ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("ar");
+async function persistLocaleServer(locale: Locale) {
+  await fetch("/api/locale", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ locale }),
+  });
+}
+
+export function AppProviders({
+  children,
+  initialLocale,
+}: {
+  children: React.ReactNode;
+  initialLocale: Locale;
+}) {
+  const router = useRouter();
+  const syncedOnMount = useRef(false);
+  const [locale, setLocaleState] = useState<Locale>(initialLocale);
   const [region, setRegionState] = useState<Region>("ksa");
   const [messages, setMessages] = useState<Messages | null>(null);
 
   useEffect(() => {
-    const savedLocale = localStorage.getItem(LOCALE_KEY) as Locale | null;
+    if (syncedOnMount.current) return;
+    syncedOnMount.current = true;
+
+    const savedLocale = localStorage.getItem(LOCALE_STORAGE_KEY);
     const savedRegion = localStorage.getItem(REGION_KEY) as Region | null;
-    if (savedLocale === "en" || savedLocale === "ar") setLocaleState(savedLocale);
-    if (savedRegion && savedRegion in REGION_CONFIG) setRegionState(savedRegion);
-  }, []);
+    const effectiveLocale = isLocale(savedLocale) ? savedLocale : initialLocale;
+
+    localStorage.setItem(LOCALE_STORAGE_KEY, effectiveLocale);
+    setLocaleCookie(effectiveLocale);
+    applyDocumentDirection(effectiveLocale);
+
+    if (effectiveLocale !== initialLocale) {
+      setLocaleState(effectiveLocale);
+      void persistLocaleServer(effectiveLocale).then(() => router.refresh());
+    }
+
+    if (savedRegion && savedRegion in REGION_CONFIG) {
+      setRegionState(savedRegion);
+    }
+  }, [initialLocale, router]);
 
   useEffect(() => {
     if (localStorage.getItem(REGION_MANUAL_KEY)) return;
@@ -56,14 +99,19 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     getMessages(locale).then(setMessages);
-    document.documentElement.lang = locale;
-    document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
+    applyDocumentDirection(locale);
   }, [locale]);
 
-  const setLocale = useCallback((next: Locale) => {
-    setLocaleState(next);
-    localStorage.setItem(LOCALE_KEY, next);
-  }, []);
+  const setLocale = useCallback(
+    (next: Locale) => {
+      setLocaleState(next);
+      localStorage.setItem(LOCALE_STORAGE_KEY, next);
+      setLocaleCookie(next);
+      applyDocumentDirection(next);
+      void persistLocaleServer(next).then(() => router.refresh());
+    },
+    [router]
+  );
 
   const setRegion = useCallback((next: Region) => {
     setRegionState(next);
@@ -77,7 +125,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
       locale,
       region,
       messages,
-      dir: locale === "ar" ? "rtl" : "ltr",
+      dir: dirFromLocale(locale),
       setLocale,
       setRegion,
       regionConfig: REGION_CONFIG[region],

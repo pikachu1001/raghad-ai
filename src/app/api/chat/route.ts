@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     const rawAnswer = image
       ? await generateVisionAnswer(query, image, retrieved, locale, category)
       : await generateAnswer(query, retrieved, locale, category);
-    const answer = stripRawUrls(rawAnswer);
+    const answer = stripRawUrls(rawAnswer, locale);
 
     const session = await getSession();
     if (session && query) {

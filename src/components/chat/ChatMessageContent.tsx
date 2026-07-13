@@ -43,20 +43,20 @@ function parseSegments(content: string): Segment[] {
 
 export function ChatMessageContent({
   content,
-  locale,
   linkLabel,
+  dir,
 }: {
   content: string;
-  locale: "en" | "ar";
   linkLabel: string;
+  dir: "ltr" | "rtl";
 }) {
   const segments = parseSegments(content);
 
   return (
-    <div className="space-y-2">
+    <div className="chat-message-body space-y-2" dir={dir}>
       {segments.map((seg, i) =>
         seg.type === "text" ? (
-          <MarkdownContent key={i} content={seg.value} />
+          <MarkdownContent key={i} content={seg.value} dir={dir} />
         ) : (
           <a
             key={i}

@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { BrandLockup, BrandLogo } from "@/components/brand/BrandLogo";
 import { useApp } from "@/components/providers/AppProviders";
-import { LanguageToggle } from "@/components/layout/LanguageToggle";
+import { SettingsMenu } from "@/components/layout/SettingsMenu";
 import { MobileNav } from "@/components/layout/MobileNav";
 
 function ActionButton({
@@ -51,7 +52,7 @@ export function LuxuryHome() {
       {/* Compass watermark */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-16 bottom-8 h-72 w-72 opacity-[0.07]"
+        className="pointer-events-none absolute -end-16 bottom-8 h-72 w-72 opacity-[0.07]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23b8965a' stroke-width='1.5'%3E%3Ccircle cx='50' cy='50' r='42'/%3E%3Cpath d='M50 8 L54 46 L50 50 L46 46 Z M50 92 L54 54 L50 50 L46 54 Z M8 50 L46 46 L50 50 L46 54 Z M92 50 L54 46 L50 50 L54 54 Z'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%23b8965a'/%3E%3C/svg%3E")`,
           backgroundSize: "contain",
@@ -60,7 +61,7 @@ export function LuxuryHome() {
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-10 top-24 h-48 w-48 opacity-[0.05]"
+        className="pointer-events-none absolute -start-10 top-24 h-48 w-48 opacity-[0.05]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23b8965a' stroke-width='1.5'%3E%3Ccircle cx='50' cy='50' r='42'/%3E%3Cpath d='M50 8 L54 46 L50 50 L46 46 Z M50 92 L54 54 L50 50 L46 54 Z M8 50 L46 46 L50 50 L46 54 Z M92 50 L54 46 L50 50 L54 54 Z'/%3E%3C/svg%3E")`,
           backgroundSize: "contain",
@@ -71,50 +72,18 @@ export function LuxuryHome() {
       {/* Bottom-left Ai watermark (reference mockup) */}
       <span
         aria-hidden
-        className="pointer-events-none absolute bottom-4 left-4 font-serif text-sm text-[#c9a962]/50"
+        className="pointer-events-none absolute bottom-4 start-4 font-serif text-sm text-[#c9a962]/50"
       >
         Ai
       </span>
 
-      {/* Arabic mobile header */}
-      {isArabic ? (
-        <header
-          dir="ltr"
-          className="relative z-10 flex items-center justify-between px-5 pt-5 md:hidden"
-        >
-          <span className="font-serif text-sm tracking-wide text-[#c9a962]">Ai</span>
-          <div className="flex items-center gap-2">
-            <LanguageToggle />
-            <MobileNav />
-          </div>
-        </header>
-      ) : null}
-
-      {/* English mobile + desktop / Arabic desktop header */}
-      <header
-        className={`relative z-10 flex items-center justify-between px-5 pt-5 md:px-8 md:pt-6 lg:px-10 lg:pt-7 ${
-          isArabic ? "hidden md:flex" : ""
-        }`}
-      >
-        <div className="relative h-10 w-10 shrink-0 md:hidden">
-          <Image
-            src="/brand/logo.png"
-            alt={isArabic ? "رغد AI" : "Raghad AI"}
-            fill
-            sizes="40px"
-            className="object-contain"
-          />
-        </div>
-        <Image
-          src="/brand/raghad-web.png"
-          alt={isArabic ? "رغد AI" : "Raghad AI"}
-          width={368}
-          height={95}
-          className="hidden h-12 w-auto shrink-0 md:block lg:h-14"
-          priority
-        />
-        <div className="flex items-center gap-2">
-          <LanguageToggle />
+      <header className="relative z-10 flex items-center justify-between gap-3 px-5 pt-5 md:px-8 md:pt-6 lg:px-10 lg:pt-7">
+        <Link href="/" className="flex min-w-0 items-center" aria-label={messages.brand}>
+          <BrandLogo size="sm" className="md:hidden" priority />
+          <BrandLockup locale={locale} height={48} className="hidden md:block" priority />
+        </Link>
+        <div className="flex shrink-0 items-center gap-2">
+          <SettingsMenu className="hidden md:flex" />
           <MobileNav />
         </div>
       </header>
@@ -131,8 +100,7 @@ export function LuxuryHome() {
           <div className="relative flex w-full flex-col items-center">
             {/* Arabic mobile decorative tagline — client mockup */}
             <div
-              dir="ltr"
-              className="pointer-events-none absolute top-10 right-6 z-10 sm:top-12 sm:right-8 md:hidden"
+              className="pointer-events-none absolute top-10 end-6 z-10 sm:top-12 sm:end-8 md:hidden"
             >
               <Image
                 src="/brand/right-text.png"
@@ -176,13 +144,13 @@ export function LuxuryHome() {
               className="mt-3 h-auto w-44 sm:w-52 md:mt-4 md:w-64 lg:w-80"
               priority
             />
-            <p className="mt-3 text-center text-sm text-[#9a8560] md:text-base lg:text-lg">
-              دليلك الذكي الموثوق
+            <p className="luxury-note mt-3 text-center md:text-base lg:text-lg">
+              {messages.hero.taglineShort}
             </p>
-            <p className="mt-1 text-center font-serif text-sm tracking-widest text-[#7a8b82] md:text-base lg:text-lg">
-              Askraghadai.com
+            <p className="luxury-muted mt-1 text-center font-serif tracking-widest md:text-base lg:text-lg">
+              {messages.hero.domain}
             </p>
-            <p className="mt-4 hidden max-w-xs text-center text-sm leading-7 text-[#4a5c52] md:block md:max-w-lg md:text-base md:leading-8 lg:text-lg">
+            <p className="luxury-body mt-4 hidden max-w-xs text-center md:block md:max-w-lg md:text-base md:leading-8 lg:text-lg">
               {messages.hero.subtitle}
             </p>
 
@@ -206,12 +174,12 @@ export function LuxuryHome() {
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder={messages.hero.searchPlaceholder}
-                    className="w-full bg-transparent text-sm text-[#3d4f45] outline-none placeholder:text-[#7d7358]"
-                    dir="rtl"
+                    className="w-full bg-transparent text-base text-[#3d4f45] outline-none placeholder:text-[#5f6d63]"
+                    dir={dir}
                   />
                   <button
                     type="submit"
-                    className="shrink-0 rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_2px_10px_rgba(31,82,64,0.4)] transition hover:from-[#337d61] hover:to-[#24614b]"
+                    className="shrink-0 rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-5 py-2.5 text-base font-semibold text-white shadow-[0_2px_10px_rgba(31,82,64,0.4)] transition hover:from-[#337d61] hover:to-[#24614b]"
                   >
                     {messages.hero.searchButton}
                   </button>
@@ -250,20 +218,20 @@ export function LuxuryHome() {
               />
             </div>
             <Image
-              src="/brand/wordmark.png"
+              src="/brand/raghad-web.png"
               alt="Raghad AI"
-              width={250}
-              height={49}
+              width={368}
+              height={95}
               className="mb-1 h-auto w-44 sm:w-52 md:w-64 lg:w-80"
               priority
             />
-            <p className="mt-2 font-serif text-sm tracking-widest text-[#7a8b82] md:text-base lg:text-lg">
-              Askraghadai.com
+            <p className="luxury-muted mt-2 font-serif tracking-widest md:text-base lg:text-lg">
+              {messages.hero.domain}
             </p>
-            <p className="mt-2 text-center text-xs text-[#9a8560] md:text-sm lg:text-base">
-              Your trusted smart guide
+            <p className="luxury-note mt-2 text-center md:text-base lg:text-lg">
+              {messages.hero.taglineShort}
             </p>
-            <p className="mt-4 max-w-xs text-center text-sm leading-7 text-[#4a5c52] md:max-w-lg md:text-base md:leading-8 lg:text-lg">
+            <p className="luxury-body mt-4 max-w-xs text-center md:max-w-lg md:text-base md:leading-8 lg:text-lg">
               {messages.hero.subtitle}
             </p>
           </div>
@@ -291,12 +259,12 @@ export function LuxuryHome() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder={messages.hero.searchPlaceholder}
-                  className="w-full bg-transparent text-sm text-[#3d4f45] outline-none placeholder:text-[#7d7358] md:text-base"
+                  className="w-full bg-transparent text-base text-[#3d4f45] outline-none placeholder:text-[#5f6d63] md:text-base"
                   dir={locale === "ar" ? "rtl" : "ltr"}
                 />
                 <button
                   type="submit"
-                  className="shrink-0 rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-5 py-2.5 text-sm font-semibold text-white shadow-[0_2px_10px_rgba(31,82,64,0.4)] transition hover:from-[#337d61] hover:to-[#24614b] md:px-6 md:py-3 md:text-base"
+                  className="shrink-0 rounded-full bg-gradient-to-b from-[#2c6e55] to-[#1f5240] px-5 py-2.5 text-base font-semibold text-white shadow-[0_2px_10px_rgba(31,82,64,0.4)] transition hover:from-[#337d61] hover:to-[#24614b] md:px-6 md:py-3"
                 >
                   {messages.hero.searchButton}
                 </button>
@@ -325,7 +293,7 @@ export function LuxuryHome() {
 
           <Link
             href="#categories"
-            className="mt-5 text-xs uppercase tracking-[0.25em] text-[#8a9a90] transition hover:text-[#2c6e55] md:mt-7 md:text-sm"
+            className="luxury-overline mt-5 transition hover:text-[#2c6e55] md:mt-7"
           >
             {messages.cards.subtitle}
           </Link>

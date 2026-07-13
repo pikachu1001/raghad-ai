@@ -6,3 +6,22 @@ export function normalizeAnswerText(text: string): string {
     .replace(/[\u2013\u2014]/g, "-")
     .replace(/\uFFFD+/g, "'");
 }
+
+const RLM = "\u200F";
+
+/** Keep Arabic punctuation from jumping to the wrong side of RTL lines. */
+export function fixRtlPunctuation(text: string): string {
+  return text
+    .split("\n")
+    .map((line) => {
+      let fixed = line.replace(/^(\s*)([:：\-–—•])\s*/, `$1${RLM}$2 `);
+      fixed = fixed.replace(/^(\s*)([([])/, `$1${RLM}$2`);
+      return fixed;
+    })
+    .join("\n");
+}
+
+export function prepareChatDisplayText(text: string, locale: "en" | "ar"): string {
+  const normalized = normalizeAnswerText(text);
+  return locale === "ar" ? fixRtlPunctuation(normalized) : normalized;
+}
