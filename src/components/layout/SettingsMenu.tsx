@@ -36,7 +36,7 @@ export function SettingsMenu({ className = "" }: { className?: string }) {
         aria-label={messages.settings.open}
         title={messages.settings.title}
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 rounded-full border border-[#c9a962]/50 bg-white/70 px-3 py-2 text-sm font-semibold text-[#24332c] shadow-sm backdrop-blur transition hover:border-[#c9a962] hover:bg-white hover:shadow-md"
+        className="flex shrink-0 items-center gap-1.5 rounded-full border border-[#c9a962]/50 bg-white/70 px-2.5 py-2 text-sm font-semibold text-[#24332c] shadow-sm backdrop-blur transition hover:border-[#c9a962] hover:bg-white hover:shadow-md xl:gap-2 xl:px-3"
       >
         <svg
           className="h-4 w-4 text-[#2c6e55]"
@@ -57,9 +57,10 @@ export function SettingsMenu({ className = "" }: { className?: string }) {
             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
           />
         </svg>
-        <span className="hidden sm:inline">{messages.settings.title}</span>
-        <span className="rounded-full bg-[#2c6e55]/10 px-2 py-0.5 text-[0.7rem] font-bold uppercase tracking-wide text-[#1f5240]">
-          {locale === "ar" ? "ع" : "EN"} · {regionShort}
+        <span className="hidden xl:inline">{messages.settings.title}</span>
+        <span className="rounded-full bg-[#2c6e55]/10 px-2 py-0.5 text-[0.65rem] font-bold uppercase tracking-wide text-[#1f5240] xl:text-[0.7rem]">
+          {locale === "ar" ? "ع" : "EN"}
+          <span className="hidden 2xl:inline">{` · ${regionShort}`}</span>
         </span>
       </button>
 
