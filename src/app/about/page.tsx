@@ -14,16 +14,6 @@ export default function AboutPage() {
           <p className="luxury-muted mx-auto mt-6 max-w-2xl text-base leading-8 sm:text-lg sm:leading-9">
             {messages.about.subtitle}
           </p>
-          <p className="luxury-muted mx-auto mt-4 max-w-2xl text-base leading-8 sm:text-lg sm:leading-9">
-            {messages.about.hostingerInviteLead}
-            <br />
-            <a
-              href={`mailto:${messages.about.hostingerInviteEmail}`}
-              className="font-medium text-[#8b6914] underline-offset-2 hover:underline"
-            >
-              {messages.about.hostingerInviteEmail}
-            </a>
-          </p>
         </section>
 
         <div className="mx-auto grid max-w-4xl gap-8 px-4 py-14 sm:gap-10 sm:px-6 sm:py-16">
